@@ -2,3 +2,7 @@
 	path = lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
 	branch = v1.3.0
+[submodule "lib/mud"]
+	path = lib/mud
+	url = https://github.com/latticexyz/mud
+	branch = v1.34.0
