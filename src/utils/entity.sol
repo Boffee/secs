@@ -9,7 +9,7 @@ function entityToToken(uint256 entity)
     pure
     returns (address token, uint256 id)
 {
-    token = getEntityToken(entity);
+    token = getEntityTokenAddress(entity);
     id = getEntityId(entity);
 }
 
@@ -33,8 +33,12 @@ function hashEntities(uint256 a, uint256 b, uint256 c) pure returns (uint256) {
     return uint256(keccak256(abi.encode(a, b, c)));
 }
 
-function getEntityToken(uint256 entity) pure returns (address) {
+function getEntityTokenAddress(uint256 entity) pure returns (address) {
     return address(uint160(entity >> 96));
+}
+
+function getEntityToken(uint256 entity) pure returns (uint256) {
+    return entity >> 96;
 }
 
 function getEntityId(uint256 entity) pure returns (uint256) {

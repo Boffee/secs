@@ -14,9 +14,8 @@ library Permission {
     ) internal view returns (bool) {
         uint256 owner = ownerOf(components, entity);
         return owner == spender
-            || isApprovedForAll(
-                components, addressToEntity(getEntityToken(entity)), owner, spender
-            ) || getApproved(components, entity) == spender;
+            || isApprovedForAll(components, getEntityToken(entity), owner, spender)
+            || getApproved(components, entity) == spender;
     }
 
     function isApprovedForAll(

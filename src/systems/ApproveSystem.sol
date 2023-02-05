@@ -34,7 +34,7 @@ contract ApproveSystem is System {
         require(
             sender == owner
                 || COMPONENTS.isApprovedForAll(
-                    addressToEntity(getEntityToken(entity)), owner, sender
+                    getEntityToken(entity), owner, sender
                 ),
             "Approve caller is not token owner or approved for all"
         );
