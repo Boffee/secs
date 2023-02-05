@@ -38,7 +38,9 @@ contract BurnSystem is System {
         COMPONENTS.approvalComponent().remove(entity);
 
         // Decrement balance
-        COMPONENTS.balanceComponent().decrement(owner, 1);
+        COMPONENTS.balanceComponent().decrement(
+            hashEntities(getEntityToken(entity), owner), 1
+        );
 
         // Remove owner
         ownerComponent.remove(entity);

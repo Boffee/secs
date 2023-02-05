@@ -46,9 +46,10 @@ contract TransferSystem is System {
         COMPONENTS.approvalComponent().remove(entity);
 
         // Move balance from old owner to new owner
+        uint256 token = getEntityToken(entity);
         BalanceComponent balanceComponent = COMPONENTS.balanceComponent();
-        balanceComponent.decrement(from, 1);
-        balanceComponent.increment(to, 1);
+        balanceComponent.decrement(hashEntities(token, from), 1);
+        balanceComponent.increment(hashEntities(token, to), 1);
 
         // Change owner
         COMPONENTS.ownerComponent().set(entity, addressToEntity(_msgSender()));
