@@ -8,9 +8,8 @@ import "../components/OwnerComponent.sol";
 import "../libraries/ComponentGetter.sol";
 import "../libraries/Permission.sol";
 
-uint256 constant SetApprovalForAllSystemID = uint256(
-    keccak256("system.SetApprovalForAll")
-);
+uint256 constant SetApprovalForAllSystemID =
+    uint256(keccak256("system.SetApprovalForAll"));
 
 contract SetApprovalForAllSystem is System {
     using ComponentGetter for IUint256Component;
@@ -19,24 +18,19 @@ contract SetApprovalForAllSystem is System {
     constructor(IWorld world, address components) System(world, components) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
-        (uint256 token, uint256 operator, bool approved) = abi.decode(
-            args,
-            (uint256, uint256, bool)
-        );
+        (uint256 token, uint256 operator, bool approved) =
+            abi.decode(args, (uint256, uint256, bool));
 
         executeTyped(token, operator, approved);
     }
 
-    function executeTyped(
-        uint256 token,
-        uint256 operator,
-        bool approved
-    ) public virtual returns (bytes memory) {
+    function executeTyped(uint256 token, uint256 operator, bool approved)
+        public
+        virtual
+        returns (bytes memory)
+    {
         _setApprovalForAll(
-            token,
-            addressToEntity(_msgSender()),
-            operator,
-            approved
+            token, addressToEntity(_msgSender()), operator, approved
         );
     }
 

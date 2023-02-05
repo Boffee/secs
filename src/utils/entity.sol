@@ -29,11 +29,7 @@ function hashEntities(uint256 a, uint256 b) pure returns (uint256) {
     return uint256(keccak256(abi.encode(a, b)));
 }
 
-function hashEntities(
-    uint256 a,
-    uint256 b,
-    uint256 c
-) pure returns (uint256) {
+function hashEntities(uint256 a, uint256 b, uint256 c) pure returns (uint256) {
     return uint256(keccak256(abi.encode(a, b, c)));
 }
 

@@ -34,10 +34,9 @@ library ComponentGetter {
         view
         returns (DescriptionComponent)
     {
-        return
-            DescriptionComponent(
-                getAddressById(components, DescriptionComponentID)
-            );
+        return DescriptionComponent(
+            getAddressById(components, DescriptionComponentID)
+        );
     }
 
     function nameComponent(IUint256Component components)
@@ -61,10 +60,9 @@ library ComponentGetter {
         view
         returns (OperatorApprovalComponent)
     {
-        return
-            OperatorApprovalComponent(
-                getAddressById(components, OperatorApprovalComponentID)
-            );
+        return OperatorApprovalComponent(
+            getAddressById(components, OperatorApprovalComponentID)
+        );
     }
 
     function symbolComponent(IUint256Component components)

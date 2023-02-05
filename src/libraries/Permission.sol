@@ -13,15 +13,10 @@ library Permission {
         uint256 entity
     ) internal view returns (bool) {
         uint256 owner = ownerOf(components, entity);
-        return
-            owner == spender ||
-            isApprovedForAll(
-                components,
-                addressToEntity(getEntityToken(entity)),
-                owner,
-                spender
-            ) ||
-            getApproved(components, entity) == spender;
+        return owner == spender
+            || isApprovedForAll(
+                components, addressToEntity(getEntityToken(entity)), owner, spender
+            ) || getApproved(components, entity) == spender;
     }
 
     function isApprovedForAll(
@@ -30,10 +25,9 @@ library Permission {
         uint256 owner,
         uint256 operator
     ) internal view returns (bool) {
-        return
-            components.operatorApprovalComponent().getValue(
-                hashEntities(token, owner, operator)
-            );
+        return components.operatorApprovalComponent().getValue(
+            hashEntities(token, owner, operator)
+        );
     }
 
     function getApproved(IUint256Component components, uint256 entity)

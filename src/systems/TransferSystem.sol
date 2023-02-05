@@ -17,19 +17,13 @@ contract TransferSystem is System {
     constructor(IWorld world, address components) System(world, components) {}
 
     function execute(bytes memory args) public returns (bytes memory) {
-        (uint256 from, uint256 to, uint256 entity) = abi.decode(
-            args,
-            (uint256, uint256, uint256)
-        );
+        (uint256 from, uint256 to, uint256 entity) =
+            abi.decode(args, (uint256, uint256, uint256));
 
         executeTyped(from, to, entity);
     }
 
-    function executeTyped(
-        uint256 from,
-        uint256 to,
-        uint256 entity
-    ) public {
+    function executeTyped(uint256 from, uint256 to, uint256 entity) public {
         require(
             COMPONENTS.isApprovedOrOwner(addressToEntity(_msgSender()), entity),
             "Caller is not entity owner or approved"
@@ -37,21 +31,15 @@ contract TransferSystem is System {
         _transfer(from, to, entity);
     }
 
-    function _transfer(
-        uint256 from,
-        uint256 to,
-        uint256 entity
-    ) internal {
+    function _transfer(uint256 from, uint256 to, uint256 entity) internal {
         require(
-            COMPONENTS.ownerOf(entity) == from,
-            "Transfer from incorrect owner"
+            COMPONENTS.ownerOf(entity) == from, "Transfer from incorrect owner"
         );
         require(to != 0, "Transfer to zero entity");
 
         // Check that entity was not transferred by `_beforeTransfer` hook
         require(
-            COMPONENTS.ownerOf(entity) == from,
-            "Transfer from incorrect owner"
+            COMPONENTS.ownerOf(entity) == from, "Transfer from incorrect owner"
         );
 
         // Clear approvals from the previous owner
