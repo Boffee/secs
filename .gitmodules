@@ -10,3 +10,7 @@
 	path = lib/solidstate-solidity
 	url = https://github.com/solidstate-network/solidstate-solidity
 	branch = v0.0.52
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
+	branch = v4.8.1
