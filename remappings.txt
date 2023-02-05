@@ -3,3 +3,4 @@ forge-std/=lib/forge-std/src/
 solecs/=lib/mud/packages/solecs/src/
 solecs-std/=lib/mud/packages/std-contracts/src/
 @solidstate/=lib/solidstate-solidity/
+@openzeppelin/=lib/openzeppelin-contracts/
