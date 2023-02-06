@@ -27,6 +27,10 @@ contract BurnSystem is System {
         virtual
         returns (bytes memory)
     {
+        require(
+            COMPONENTS._isApprovedOrOwner(addressToEntity(_msgSender()), entity),
+            "Caller is not entity owner or approved"
+        );
         COMPONENTS._burn(entity);
     }
 }
