@@ -33,7 +33,7 @@ contract ApproveSystem is System {
 
         require(to != owner, "Approval to current owner");
         require(
-            sender == owner || sender == token
+            sender == owner
                 || COMPONENTS.isApprovedForAll(token, owner, sender),
             "Approve caller is not token owner or approved for all"
         );

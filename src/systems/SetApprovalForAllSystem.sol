@@ -16,23 +16,19 @@ contract SetApprovalForAllSystem is System {
     constructor(IWorld world, address components) System(world, components) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
-        (uint256 token, uint256 owner, uint256 operator, bool approved) =
-            abi.decode(args, (uint256, uint256, uint256, bool));
+        (uint256 token, uint256 operator, bool approved) =
+            abi.decode(args, (uint256, uint256, bool));
 
-        executeTyped(token, owner, operator, approved);
+        executeTyped(token, operator, approved);
     }
 
-    function executeTyped(
-        uint256 token,
-        uint256 owner,
-        uint256 operator,
-        bool approved
-    ) public virtual returns (bytes memory) {
-        uint256 sender = addressToEntity(_msgSender());
-        require(
-            sender == owner || sender == token, "Caller is not owner or token"
+    function executeTyped(uint256 token, uint256 operator, bool approved)
+        public
+        virtual
+        returns (bytes memory)
+    {
+        COMPONENTS._setApprovalForAll(
+            token, addressToEntity(_msgSender()), operator, approved
         );
-        addressToEntity(_msgSender());
-        COMPONENTS._setApprovalForAll(token, owner, operator, approved);
     }
 }

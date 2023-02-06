@@ -112,8 +112,11 @@ contract ECS721 is System, IECS721 {
      * @dev See {IERC721-approve}.
      */
     function approve(address to, uint256 tokenId) public virtual override {
-        SYSTEMS.approveSystem().executeTyped(
-            toEntity(tokenId), addressToEntity(to)
+        address(SYSTEMS.approveSystem()).functionDelegateCall(
+            abi.encodeWithSelector(
+                EXECUTE_SELECTOR,
+                abi.encode(toEntity(tokenId), addressToEntity(to))
+            )
         );
     }
 
@@ -138,11 +141,16 @@ contract ECS721 is System, IECS721 {
         virtual
         override
     {
-        COMPONENTS.setApprovalForAllSystem().executeTyped(
-            addressToEntity(address(this)),
-            addressToEntity(_msgSender()),
-            addressToEntity(operator),
-            approved
+        address(COMPONENTS.setApprovalForAllSystem()).functionDelegateCall(
+            abi.encodeWithSelector(
+                EXECUTE_SELECTOR,
+                abi.encode(
+                    addressToEntity(address(this)),
+                    addressToEntity(_msgSender()),
+                    addressToEntity(operator),
+                    approved
+                )
+            )
         );
     }
 
@@ -203,8 +211,16 @@ contract ECS721 is System, IECS721 {
         uint256 tokenId,
         bytes memory _data
     ) public virtual override {
-        SYSTEMS.safeTransferFromSystem().executeTyped(
-            addressToEntity(from), addressToEntity(to), tokenId, _data
+        address(SYSTEMS.safeTransferFromSystem()).functionDelegateCall(
+            abi.encodeWithSelector(
+                EXECUTE_SELECTOR,
+                abi.encode(
+                    addressToEntity(from),
+                    addressToEntity(to),
+                    toEntity(tokenId),
+                    _data
+                )
+            )
         );
     }
 
@@ -219,10 +235,12 @@ contract ECS721 is System, IECS721 {
 
     function beforeTokenTransfer(uint256 from, uint256 to, uint256 entity)
         public
+        virtual
     {}
 
     function afterTokenTransfer(uint256 from, uint256 to, uint256 entity)
         public
+        virtual
     {
         emit Transfer(
             entityToAddress(from), entityToAddress(to), getEntityId(entity)
@@ -231,6 +249,7 @@ contract ECS721 is System, IECS721 {
 
     function afterApproval(uint256 owner, uint256 approved, uint256 entity)
         public
+        virtual
     {
         emit Approval(
             entityToAddress(owner),
@@ -241,6 +260,7 @@ contract ECS721 is System, IECS721 {
 
     function afterApprovalForAll(uint256 owner, uint256 operator, bool approved)
         public
+        virtual
     {
         emit ApprovalForAll(
             entityToAddress(owner), entityToAddress(operator), approved

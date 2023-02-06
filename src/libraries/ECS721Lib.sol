@@ -167,7 +167,7 @@ library ECS721Lib {
     ) internal view returns (bool) {
         uint256 owner = ownerOf(components, entity);
         uint256 token = getEntityToken(entity);
-        return owner == spender || token == spender
+        return owner == spender
             || isApprovedForAll(components, token, owner, spender)
             || getApproved(components, entity) == spender;
     }
