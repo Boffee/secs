@@ -19,7 +19,7 @@ contract ECS721 is System, IECS721 {
 
     IUint256Component public immutable SYSTEMS;
 
-    constructor(IWorld world) System(world) {
+    constructor(IWorld world, uint256 id) System(world, id) {
         SYSTEMS = world.systems();
     }
 
@@ -217,7 +217,7 @@ contract ECS721 is System, IECS721 {
         address from,
         address to,
         uint256 tokenId,
-        bytes memory _data
+        bytes memory data
     ) public virtual override {
         address(SYSTEMS.safeTransferFromSystem()).functionDelegateCall(
             abi.encodeWithSelector(
@@ -226,7 +226,7 @@ contract ECS721 is System, IECS721 {
                     addressToEntity(from),
                     addressToEntity(to),
                     toEntity(tokenId),
-                    _data
+                    data
                 )
             )
         );

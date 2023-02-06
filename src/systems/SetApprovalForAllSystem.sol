@@ -13,7 +13,7 @@ uint256 constant SetApprovalForAllSystemID =
 contract SetApprovalForAllSystem is System {
     using ECS721Lib for IUint256Component;
 
-    constructor(IWorld world) System(world) {}
+    constructor(IWorld world) System(world, SetApprovalForAllSystemID) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 token, uint256 operator, bool approved) =

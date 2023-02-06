@@ -14,7 +14,7 @@ contract ApproveSystem is System {
     using ComponentGetter for IUint256Component;
     using ECS721Lib for IUint256Component;
 
-    constructor(IWorld world) System(world) {}
+    constructor(IWorld world) System(world, ApproveSystemID) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 to, uint256 entity) = abi.decode(args, (uint256, uint256));
