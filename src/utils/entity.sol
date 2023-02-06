@@ -44,3 +44,11 @@ function getEntityToken(uint256 entity) pure returns (uint256) {
 function getEntityId(uint256 entity) pure returns (uint256) {
     return entity & 0xffffffffffffffffffffffff;
 }
+
+function entityIsAddress(uint256 entity) pure returns (bool) {
+    return entity >> 160 == 0;
+}
+
+function hashEntityToAddress(uint256 entity) pure returns (address) {
+    return address(uint160(uint256(keccak256(abi.encode(entity)))));
+}

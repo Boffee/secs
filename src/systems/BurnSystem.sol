@@ -6,13 +6,13 @@ import "solecs/utils.sol";
 import "./System.sol";
 import "../components/OwnerComponent.sol";
 import "../libraries/ComponentGetter.sol";
-import "../libraries/Permission.sol";
+import "../libraries/ECS721Lib.sol";
 
 uint256 constant BurnSystemID = uint256(keccak256("system.Burn"));
 
 contract BurnSystem is System {
     using ComponentGetter for IUint256Component;
-    using Permission for IUint256Component;
+    using ECS721Lib for IUint256Component;
 
     constructor(IWorld world, address components) System(world, components) {}
 
@@ -27,22 +27,6 @@ contract BurnSystem is System {
         virtual
         returns (bytes memory)
     {
-        _burn(entity);
-    }
-
-    function _burn(uint256 entity) internal virtual {
-        OwnerComponent ownerComponent = COMPONENTS.ownerComponent();
-        uint256 owner = ownerComponent.getValue(entity);
-
-        // Clear approvals
-        COMPONENTS.approvalComponent().remove(entity);
-
-        // Decrement balance
-        COMPONENTS.balanceComponent().decrement(
-            hashEntities(getEntityToken(entity), owner), 1
-        );
-
-        // Remove owner
-        ownerComponent.remove(entity);
+        COMPONENTS._burn(entity);
     }
 }
