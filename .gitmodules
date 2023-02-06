@@ -14,3 +14,6 @@
 	path = lib/openzeppelin-contracts
 	url = https://github.com/openzeppelin/openzeppelin-contracts
 	branch = v4.8.1
+[submodule "lib/memmove"]
+	path = lib/memmove
+	url = https://github.com/brockelmore/memmove
