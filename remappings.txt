@@ -1,6 +1,8 @@
+@solidstate/=lib/solidstate-solidity/
+@openzeppelin/=lib/openzeppelin-contracts/
 ds-test/=lib/forge-std/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 solecs/=lib/mud/packages/solecs/src/
 solecs-std/=lib/mud/packages/std-contracts/src/
-@solidstate/=lib/solidstate-solidity/
-@openzeppelin/=lib/openzeppelin-contracts/
+memmove/=lib/memmove/src/
+solmate/=lib/solmate/src/
