@@ -19,7 +19,7 @@ contract ECS721 is System, IECS721 {
 
     IUint256Component public immutable SYSTEMS;
 
-    constructor(IWorld world, address components) System(world, components) {
+    constructor(IWorld world) System(world) {
         SYSTEMS = world.systems();
     }
 

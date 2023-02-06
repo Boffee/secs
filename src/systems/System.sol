@@ -13,10 +13,8 @@ abstract contract System is ISystem, Ownable, Context {
     IUint256Component public immutable COMPONENTS;
     IWorld public immutable WORLD;
 
-    constructor(IWorld world, address components) {
-        COMPONENTS = components == address(0)
-            ? world.components()
-            : IUint256Component(components);
+    constructor(IWorld world) {
+        COMPONENTS = world.components();
         WORLD = world;
     }
 }

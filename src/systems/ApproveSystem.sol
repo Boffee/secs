@@ -14,7 +14,7 @@ contract ApproveSystem is System {
     using ComponentGetter for IUint256Component;
     using ECS721Lib for IUint256Component;
 
-    constructor(IWorld world, address components) System(world, components) {}
+    constructor(IWorld world) System(world) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 to, uint256 entity) = abi.decode(args, (uint256, uint256));
@@ -33,8 +33,7 @@ contract ApproveSystem is System {
 
         require(to != owner, "Approval to current owner");
         require(
-            sender == owner
-                || COMPONENTS.isApprovedForAll(token, owner, sender),
+            sender == owner || COMPONENTS.isApprovedForAll(token, owner, sender),
             "Approve caller is not token owner or approved for all"
         );
         COMPONENTS._approve(to, entity);

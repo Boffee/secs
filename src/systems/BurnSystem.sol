@@ -14,7 +14,7 @@ contract BurnSystem is System {
     using ComponentGetter for IUint256Component;
     using ECS721Lib for IUint256Component;
 
-    constructor(IWorld world, address components) System(world, components) {}
+    constructor(IWorld world) System(world) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         uint256 entity = abi.decode(args, (uint256));
