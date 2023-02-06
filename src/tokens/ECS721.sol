@@ -171,6 +171,14 @@ contract ECS721 is System, IECS721 {
         );
     }
 
+    function burn(uint256 tokenId) public virtual override {
+        address(SYSTEMS.burnSystem()).functionDelegateCall(
+            abi.encodeWithSelector(
+                EXECUTE_SELECTOR, abi.encode(toEntity(tokenId))
+            )
+        );
+    }
+
     /**
      * @dev See {IERC721-transferFrom}.
      */
@@ -265,5 +273,17 @@ contract ECS721 is System, IECS721 {
         emit ApprovalForAll(
             entityToAddress(owner), entityToAddress(operator), approved
             );
+    }
+
+    function _mint(address to, uint256 tokenId) internal virtual {
+        COMPONENTS._mint(addressToEntity(to), toEntity(tokenId));
+    }
+
+    function _safeMint(address to, uint256 tokenId) internal virtual {
+        COMPONENTS._safeMint(
+            addressToEntity(_msgSender()),
+            addressToEntity(to),
+            toEntity(tokenId)
+        );
     }
 }
