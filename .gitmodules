@@ -17,3 +17,6 @@
 [submodule "lib/memmove"]
 	path = lib/memmove
 	url = https://github.com/brockelmore/memmove
+[submodule "lib/solmate"]
+	path = lib/solmate
+	url = https://github.com/transmissions11/solmate
