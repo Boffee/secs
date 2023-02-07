@@ -7,7 +7,8 @@ import "../libraries/ECS721Lib.sol";
 import "../utils/entity.sol";
 import "./System.sol";
 
-uint256 constant TransferFromSystemID = uint256(keccak256("system.Transfer"));
+uint256 constant TransferFromSystemID =
+    uint256(keccak256("system.TransferFrom"));
 
 contract TransferFromSystem is System {
     using ECS721Lib for IUint256Component;

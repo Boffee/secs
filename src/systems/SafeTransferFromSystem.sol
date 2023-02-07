@@ -8,7 +8,7 @@ import "../utils/entity.sol";
 import "./System.sol";
 
 uint256 constant SafeTransferFromSystemID =
-    uint256(keccak256("system.SafeTransfer"));
+    uint256(keccak256("system.SafeTransferFrom"));
 
 contract SafeTransferFromSystem is System {
     using ECS721Lib for IUint256Component;
