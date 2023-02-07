@@ -9,12 +9,14 @@ import "secs/tokens/ECS721.sol";
 import "./mocks/MockECS721.sol";
 
 library DeployLib {
+    using SystemGetter for IUint256Component;
+
     function deploy() internal returns (IWorld world) {
         world = new World();
         world.init();
         deployComponents(world);
         deploySystems(world);
-        deployECS721(world);
+        configECS721(world, deployECS721(world));
     }
 
     function authorizeWriter(IWorld world, uint256 componentId, address writer)
@@ -60,13 +62,23 @@ library DeployLib {
         authorizeWriter(world, OwnerComponentID, transferFromSystem);
     }
 
-    function deployECS721(IWorld world) internal {
-        address ecs721 = address(new MockECS721(world));
-        authorizeWriter(world, ApprovalComponentID, ecs721);
-        authorizeWriter(world, BalanceComponentID, ecs721);
-        authorizeWriter(world, NameComponentID, ecs721);
-        authorizeWriter(world, OperatorApprovalComponentID, ecs721);
-        authorizeWriter(world, OwnerComponentID, ecs721);
-        authorizeWriter(world, SymbolComponentID, ecs721);
+    function deployECS721(IWorld world) internal returns (ECS721 ecs721) {
+        return new MockECS721(world);
+    }
+
+    function configECS721(IWorld world, ECS721 ecs721) internal {
+        authorizeWriter(world, ApprovalComponentID, address(ecs721));
+        authorizeWriter(world, BalanceComponentID, address(ecs721));
+        authorizeWriter(world, NameComponentID, address(ecs721));
+        authorizeWriter(world, OperatorApprovalComponentID, address(ecs721));
+        authorizeWriter(world, OwnerComponentID, address(ecs721));
+        authorizeWriter(world, SymbolComponentID, address(ecs721));
+
+        IUint256Component systems = world.systems();
+        ecs721.approveOperator(address(systems.approveSystem()));
+        ecs721.approveOperator(address(systems.burnSystem()));
+        ecs721.approveOperator(address(systems.safeTransferFromSystem()));
+        ecs721.approveOperator(address(systems.setApprovalForAllSystem()));
+        ecs721.approveOperator(address(systems.transferFromSystem()));
     }
 }

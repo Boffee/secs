@@ -243,11 +243,13 @@ contract ECS721 is System, IECS721 {
     function beforeTokenTransfer(uint256 from, uint256 to, uint256 entity)
         public
         virtual
+        onlyOperator
     {}
 
     function afterTokenTransfer(uint256 from, uint256 to, uint256 entity)
         public
         virtual
+        onlyOperator
     {
         emit Transfer(
             entityToAddress(from), entityToAddress(to), getEntityId(entity)
@@ -257,6 +259,7 @@ contract ECS721 is System, IECS721 {
     function afterApproval(uint256 owner, uint256 approved, uint256 entity)
         public
         virtual
+        onlyOperator
     {
         emit Approval(
             entityToAddress(owner),
@@ -268,6 +271,7 @@ contract ECS721 is System, IECS721 {
     function afterApprovalForAll(uint256 owner, uint256 operator, bool approved)
         public
         virtual
+        onlyOperator
     {
         emit ApprovalForAll(
             entityToAddress(owner), entityToAddress(operator), approved
@@ -304,5 +308,27 @@ contract ECS721 is System, IECS721 {
 
     function setSymbol(string memory symbol_) public virtual onlyOwner {
         COMPONENTS._setSymbol(symbol_);
+    }
+
+    function approveOperator(address operator) public virtual onlyOwner {
+        COMPONENTS.operatorApprovalComponent().set(
+            hashEntities(
+                addressToEntity(address(this)), addressToEntity(operator)
+            )
+        );
+    }
+
+    modifier onlyOperator() {
+        address sender = _msgSender();
+        require(
+            sender == (address(this))
+                || COMPONENTS.operatorApprovalComponent().getValue(
+                    hashEntities(
+                        addressToEntity(address(this)), addressToEntity(sender)
+                    )
+                ),
+            "ERC721: caller is not an operator"
+        );
+        _;
     }
 }
