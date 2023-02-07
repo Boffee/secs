@@ -81,11 +81,12 @@ contract ERC721Test is DSTestPlus {
 
     function testBurn() public {
         token.mint(address(0xBEEF), 1337);
+        hevm.prank(address(0xBEEF));
         token.burn(1337);
 
         assertEq(token.balanceOf(address(0xBEEF)), 0);
 
-        hevm.expectRevert("NOT_MINTED");
+        hevm.expectRevert("ERC721: invalid token ID");
         token.ownerOf(1337);
     }
 
@@ -107,7 +108,7 @@ contract ERC721Test is DSTestPlus {
         assertEq(token.balanceOf(address(this)), 0);
         assertEq(token.getApproved(1337), address(0));
 
-        hevm.expectRevert("NOT_MINTED");
+        hevm.expectRevert("ERC721: invalid token ID");
         token.ownerOf(1337);
     }
 
@@ -427,11 +428,12 @@ contract ERC721Test is DSTestPlus {
         if (to == address(0)) to = address(0xBEEF);
 
         token.mint(to, id);
+        hevm.prank(to);
         token.burn(id);
 
         assertEq(token.balanceOf(to), 0);
 
-        hevm.expectRevert("NOT_MINTED");
+        hevm.expectRevert("ERC721: invalid token ID");
         token.ownerOf(id);
     }
 
@@ -455,7 +457,7 @@ contract ERC721Test is DSTestPlus {
         assertEq(token.balanceOf(address(this)), 0);
         assertEq(token.getApproved(id), address(0));
 
-        hevm.expectRevert("NOT_MINTED");
+        hevm.expectRevert("ERC721: invalid token ID");
         token.ownerOf(id);
     }
 
@@ -644,7 +646,15 @@ contract ERC721Test is DSTestPlus {
 
         token.mint(to, id);
 
+        hevm.startPrank(to);
         token.burn(id);
+        token.burn(id);
+    }
+
+    function testFailBurnNotOwner(uint96 id, address to) public {
+        if (to == address(0)) to = address(0xBEEF);
+
+        token.mint(to, id);
         token.burn(id);
     }
 
