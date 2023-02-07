@@ -21,7 +21,9 @@ library ECS721Lib {
         returns (uint256)
     {
         require(owner != 0, "ERC721: address zero is not a valid owner");
-        return components.balanceComponent().getValue(owner);
+        return components.balanceComponent().getValue(
+            hashEntities(addressToEntity(address(this)), owner)
+        );
     }
 
     /**
@@ -246,7 +248,6 @@ library ECS721Lib {
     {
         require(to != 0, "ERC721: mint to the zero address");
         require(!_exists(components, entity), "ERC721: token already minted");
-
         _beforeTokenTransfer(0, to, entity);
 
         require(!_exists(components, entity), "ERC721: token already minted");
