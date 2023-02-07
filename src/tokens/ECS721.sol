@@ -146,7 +146,6 @@ contract ECS721 is System, IECS721 {
                 EXECUTE_SELECTOR,
                 abi.encode(
                     addressToEntity(address(this)),
-                    addressToEntity(_msgSender()),
                     addressToEntity(operator),
                     approved
                 )
