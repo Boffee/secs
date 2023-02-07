@@ -2,10 +2,10 @@
 pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
 import "solecs/interfaces/IWorld.sol";
 import "solecs/utils.sol";
 import "../libraries/ComponentGetter.sol";
+import "../libraries/DelegateCall.sol";
 import "../libraries/ECS721Lib.sol";
 import "../libraries/SystemGetter.sol";
 import "../utils/entity.sol";
@@ -15,7 +15,7 @@ contract ECS721 is System, IECS721 {
     using ComponentGetter for IUint256Component;
     using SystemGetter for IUint256Component;
     using ECS721Lib for IUint256Component;
-    using Address for address;
+    using DelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;
 
