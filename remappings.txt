@@ -6,3 +6,4 @@ solecs/=lib/mud/packages/solecs/src/
 solecs-std/=lib/mud/packages/std-contracts/src/
 memmove/=lib/memmove/src/
 solmate/=lib/solmate/src/
+secs/=src/
