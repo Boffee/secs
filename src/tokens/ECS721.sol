@@ -115,7 +115,7 @@ contract ECS721 is System, IECS721 {
         address(SYSTEMS.approveSystem()).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR,
-                abi.encode(toEntity(tokenId), addressToEntity(to))
+                abi.encode(addressToEntity(to), toEntity(tokenId))
             )
         );
     }
