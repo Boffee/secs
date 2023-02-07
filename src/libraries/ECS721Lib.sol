@@ -135,7 +135,7 @@ library ECS721Lib {
                 entityToAddress(operator),
                 entityToAddress(from),
                 entityToAddress(to),
-                entity,
+                getEntityId(entity),
                 data
             ),
             "ERC721: transfer to non ERC721Receiver implementer"
@@ -224,7 +224,7 @@ library ECS721Lib {
                 entityToAddress(operator),
                 address(0),
                 entityToAddress(to),
-                entity,
+                getEntityId(entity),
                 data
             ),
             "ERC721: transfer to non ERC721Receiver implementer"
@@ -393,7 +393,7 @@ library ECS721Lib {
      *
      * @param from address representing the previous owner of the given token ID
      * @param to target address that will receive the tokens
-     * @param entity uint256 ID of the token to be transferred
+     * @param tokenId uint256 ID of the token to be transferred
      * @param data bytes optional data to send along with the call
      * @return bool whether the call correctly returned the expected magic value
      */
@@ -401,12 +401,12 @@ library ECS721Lib {
         address operator,
         address from,
         address to,
-        uint256 entity,
+        uint256 tokenId,
         bytes memory data
     ) private returns (bool) {
         if (to.isContract()) {
             try IERC721Receiver(to).onERC721Received(
-                operator, from, entity, data
+                operator, from, tokenId, data
             ) returns (bytes4 retval) {
                 return retval == IERC721Receiver.onERC721Received.selector;
             } catch (bytes memory reason) {
