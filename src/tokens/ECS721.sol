@@ -141,7 +141,7 @@ contract ECS721 is System, IECS721 {
         virtual
         override
     {
-        address(COMPONENTS.setApprovalForAllSystem()).functionDelegateCall(
+        address(SYSTEMS.setApprovalForAllSystem()).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR,
                 abi.encode(
