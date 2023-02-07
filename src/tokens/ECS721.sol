@@ -287,6 +287,18 @@ contract ECS721 is System, IECS721 {
         );
     }
 
+    function _safeMint(address to, uint256 tokenId, bytes memory data)
+        internal
+        virtual
+    {
+        COMPONENTS._safeMint(
+            addressToEntity(_msgSender()),
+            addressToEntity(to),
+            toEntity(tokenId),
+            data
+        );
+    }
+
     function setName(string memory name_) public virtual onlyOwner {
         COMPONENTS._setName(name_);
     }
