@@ -286,4 +286,12 @@ contract ECS721 is System, IECS721 {
             toEntity(tokenId)
         );
     }
+
+    function setName(string memory name_) public virtual onlyOwner {
+        COMPONENTS._setName(name_);
+    }
+
+    function setSymbol(string memory symbol_) public virtual onlyOwner {
+        COMPONENTS._setSymbol(symbol_);
+    }
 }

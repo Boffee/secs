@@ -87,6 +87,20 @@ library ECS721Lib {
         );
     }
 
+    function _setName(IUint256Component components, string memory name_)
+        internal
+    {
+        components.nameComponent().set(addressToEntity(address(this)), name_);
+    }
+
+    function _setSymbol(IUint256Component components, string memory symbol_)
+        internal
+    {
+        components.symbolComponent().set(
+            addressToEntity(address(this)), symbol_
+        );
+    }
+
     /**
      * @dev Safely transfers `entity` token from `from` to `to`, checking first that contract recipients
      * are aware of the ERC721 protocol to prevent tokens from being forever locked.
