@@ -34,7 +34,7 @@ contract ECS721 is System, IECS721 {
         virtual
         returns (bytes memory)
     {
-        COMPONENTS._mint(to, entity);
+        _mint(to, entity);
     }
 
     /**
