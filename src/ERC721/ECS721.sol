@@ -4,11 +4,11 @@ pragma solidity >=0.8.0;
 import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
 import "solecs/interfaces/IWorld.sol";
 import "solecs/utils.sol";
-import "../libraries/ComponentGetter.sol";
-import "../libraries/DelegateCall.sol";
-import "../libraries/ECS721Lib.sol";
-import "../libraries/SystemGetter.sol";
-import "../utils/entity.sol";
+import "secs/libraries/ComponentGetter.sol";
+import "secs/libraries/DelegateCall.sol";
+import "secs/utils/entity.sol";
+import "./libraries/SystemGetter.sol";
+import "./ECS721Lib.sol";
 import "./IECS721.sol";
 
 contract ECS721 is System, IECS721 {
@@ -34,7 +34,7 @@ contract ECS721 is System, IECS721 {
         virtual
         returns (bytes memory)
     {
-        _mint(to, entity);
+        COMPONENTS._mint(to, entity);
     }
 
     /**

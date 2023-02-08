@@ -2,13 +2,10 @@
 pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
-import "solecs/utils.sol";
-import "./System.sol";
-import "../components/OwnerComponent.sol";
-import "../libraries/ComponentGetter.sol";
-import "../libraries/ECS721Lib.sol";
+import "secs/ERC721/ECS721Lib.sol";
+import "secs/systems/System.sol";
 
-uint256 constant BurnSystemID = uint256(keccak256("system.Burn"));
+uint256 constant BurnSystemID = uint256(keccak256("system.ERC721.Burn"));
 
 contract BurnSystem is System {
     using ComponentGetter for IUint256Component;

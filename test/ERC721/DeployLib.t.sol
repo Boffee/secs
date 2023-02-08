@@ -3,8 +3,6 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 import "forge-std/console2.sol";
-import "secs/libraries/ComponentGetter.sol";
-import "secs/libraries/SystemGetter.sol";
 import "./DeployLib.sol";
 
 contract DeployLibTest is Test {

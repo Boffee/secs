@@ -4,7 +4,6 @@ pragma solidity >=0.8.0;
 import {DSTestPlus} from "solmate/test/utils/DSTestPlus.sol";
 import {DSInvariantTest} from "solmate/test/utils/DSInvariantTest.sol";
 import {ERC721TokenReceiver} from "solmate/tokens/ERC721.sol";
-import "./mocks/MockECS721.sol";
 import "./DeployLib.sol";
 
 /// modified from (https://github.com/transmissions11/solmate/blob/main/src/test/ERC721.t.sol)
