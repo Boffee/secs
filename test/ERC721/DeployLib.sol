@@ -3,8 +3,8 @@ pragma solidity >=0.8.0;
 
 import "forge-std/console2.sol";
 import "solecs/World.sol";
-import "secs/ERC721/libraries/SystemGetter.sol";
-import "secs/libraries/ComponentGetter.sol";
+import "secs/tokens/ERC721/libraries/SystemGetter.sol";
+import "secs/tokens/libraries/ComponentGetter.sol";
 import "./mocks/MockECS721.sol";
 
 library DeployLib {

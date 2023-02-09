@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
 import "solecs/utils.sol";
-import "secs/libraries/ComponentGetter.sol";
+import "secs/tokens/libraries/ComponentGetter.sol";
 import "secs/libraries/DelegateCall.sol";
 import "secs/systems/System.sol";
 import "secs/utils/entity.sol";

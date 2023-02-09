@@ -4,7 +4,7 @@ pragma solidity >=0.8.0;
 import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
 import "@openzeppelin/contracts/interfaces/IERC721.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
-import "secs/libraries/ComponentGetter.sol";
+import "secs/tokens/libraries/ComponentGetter.sol";
 import "secs/utils/entity.sol";
 import "./IECS721Hooks.sol";
 

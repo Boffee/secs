@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import "secs/ERC721/ECS721.sol";
+import "secs/tokens/ERC721/ECS721.sol";
 
 uint256 constant MockECS721ID = uint256(keccak256("system.MockECS721"));
 

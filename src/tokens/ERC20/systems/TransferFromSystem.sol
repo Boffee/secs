@@ -2,7 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
-import "secs/ERC20/ECS20Lib.sol";
+import "secs/tokens/ERC20/ECS20Lib.sol";
 import "secs/systems/System.sol";
 
 uint256 constant TransferFromSystemID =

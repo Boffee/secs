@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import "secs/ERC20/ECS20.sol";
+import "secs/tokens/ERC20/ECS20.sol";
 
 uint256 constant MockECS20ID = uint256(keccak256("system.MockECS20"));
 

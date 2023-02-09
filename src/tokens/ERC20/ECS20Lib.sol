@@ -2,7 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
-import "secs/libraries/ComponentGetter.sol";
+import "secs/tokens/libraries/ComponentGetter.sol";
 import "secs/utils/entity.sol";
 import "./IECS20Hooks.sol";
 
