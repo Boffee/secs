@@ -72,12 +72,5 @@ library DeployLib {
         authorizeWriter(world, OperatorApprovalComponentID, address(ecs721));
         authorizeWriter(world, OwnerComponentID, address(ecs721));
         authorizeWriter(world, SymbolComponentID, address(ecs721));
-
-        IUint256Component systems = world.systems();
-        ecs721.approveOperator(address(systems.approveSystem()));
-        ecs721.approveOperator(address(systems.burnSystem()));
-        ecs721.approveOperator(address(systems.safeTransferFromSystem()));
-        ecs721.approveOperator(address(systems.setApprovalForAllSystem()));
-        ecs721.approveOperator(address(systems.transferFromSystem()));
     }
 }

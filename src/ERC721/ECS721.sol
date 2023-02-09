@@ -243,13 +243,13 @@ contract ECS721 is System, IECS721 {
     function beforeTokenTransfer(uint256 from, uint256 to, uint256 entity)
         public
         virtual
-        onlyOperator
+        onlyOwnerWriter
     {}
 
     function afterTokenTransfer(uint256 from, uint256 to, uint256 entity)
         public
         virtual
-        onlyOperator
+        onlyOwnerWriter
     {
         emit Transfer(
             entityToAddress(from), entityToAddress(to), getEntityId(entity)
@@ -259,7 +259,7 @@ contract ECS721 is System, IECS721 {
     function afterApproval(uint256 owner, uint256 approved, uint256 entity)
         public
         virtual
-        onlyOperator
+        onlyApprovalWriter
     {
         emit Approval(
             entityToAddress(owner),
@@ -271,7 +271,7 @@ contract ECS721 is System, IECS721 {
     function afterApprovalForAll(uint256 owner, uint256 operator, bool approved)
         public
         virtual
-        onlyOperator
+        onlyOperatorApprovalWriter
     {
         emit ApprovalForAll(
             entityToAddress(owner), entityToAddress(operator), approved
@@ -310,24 +310,26 @@ contract ECS721 is System, IECS721 {
         COMPONENTS._setSymbol(symbol_);
     }
 
-    function approveOperator(address operator) public virtual onlyOwner {
-        COMPONENTS.operatorApprovalComponent().set(
-            hashEntities(
-                addressToEntity(address(this)), addressToEntity(operator)
-            )
+    modifier onlyOwnerWriter() {
+        require(
+            COMPONENTS.ownerComponent().writeAccess(_msgSender()),
+            "ERC721: only owner writer"
         );
+        _;
     }
 
-    modifier onlyOperator() {
-        address sender = _msgSender();
+    modifier onlyApprovalWriter() {
         require(
-            sender == (address(this))
-                || COMPONENTS.operatorApprovalComponent().getValue(
-                    hashEntities(
-                        addressToEntity(address(this)), addressToEntity(sender)
-                    )
-                ),
-            "ERC721: caller is not an operator"
+            COMPONENTS.approvalComponent().writeAccess(_msgSender()),
+            "ERC721: only approval writer"
+        );
+        _;
+    }
+
+    modifier onlyOperatorApprovalWriter() {
+        require(
+            COMPONENTS.operatorApprovalComponent().writeAccess(_msgSender()),
+            "ERC721: only operator approval writer"
         );
         _;
     }

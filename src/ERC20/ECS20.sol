@@ -226,13 +226,13 @@ contract ECS20 is System, IECS20 {
     function beforeTokenTransfer(uint256 from, uint256 to, uint256 amount)
         public
         virtual
-        onlyOperator
+        onlyBalanceWriter
     {}
 
     function afterTokenTransfer(uint256 from, uint256 to, uint256 amount)
         public
         virtual
-        onlyOperator
+        onlyBalanceWriter
     {
         emit Transfer(
             entityToAddress(from), entityToAddress(to), getEntityId(amount)
@@ -242,7 +242,7 @@ contract ECS20 is System, IECS20 {
     function afterApproval(uint256 owner, uint256 spender, uint256 amount)
         public
         virtual
-        onlyOperator
+        onlyAllowanceWriter
     {
         emit Approval(
             entityToAddress(owner),
@@ -257,14 +257,6 @@ contract ECS20 is System, IECS20 {
 
     function setSymbol(string memory symbol_) public virtual onlyOwner {
         COMPONENTS._setSymbol(symbol_);
-    }
-
-    function approveOperator(address operator) public virtual onlyOwner {
-        COMPONENTS.operatorApprovalComponent().set(
-            hashEntities(
-                addressToEntity(address(this)), addressToEntity(operator)
-            )
-        );
     }
 
     function _mint(address account, uint256 amount) internal virtual {
@@ -292,19 +284,18 @@ contract ECS20 is System, IECS20 {
         return addressToEntity(address(this));
     }
 
-    /**
-     * @dev check if the caller is an operator
-     */
-    modifier onlyOperator() {
-        address sender = _msgSender();
+    modifier onlyBalanceWriter() {
         require(
-            sender == (address(this))
-                || COMPONENTS.operatorApprovalComponent().getValue(
-                    hashEntities(
-                        addressToEntity(address(this)), addressToEntity(sender)
-                    )
-                ),
-            "ERC20: caller is not an operator"
+            COMPONENTS.balanceComponent().writeAccess(_msgSender()),
+            "ERC20: only balance writer"
+        );
+        _;
+    }
+
+    modifier onlyAllowanceWriter() {
+        require(
+            COMPONENTS.allowanceComponent().writeAccess(_msgSender()),
+            "ERC20: only allowance writer"
         );
         _;
     }

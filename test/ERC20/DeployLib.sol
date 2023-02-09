@@ -29,7 +29,6 @@ library DeployLib {
         new AllowanceComponent(address(world));
         new BalanceComponent(address(world));
         new NameComponent(address(world));
-        new OperatorApprovalComponent(address(world));
         new SymbolComponent(address(world));
         new TotalSupplyComponent(address(world));
     }
@@ -55,13 +54,7 @@ library DeployLib {
         authorizeWriter(world, AllowanceComponentID, address(ecs20));
         authorizeWriter(world, BalanceComponentID, address(ecs20));
         authorizeWriter(world, NameComponentID, address(ecs20));
-        authorizeWriter(world, OperatorApprovalComponentID, address(ecs20));
         authorizeWriter(world, SymbolComponentID, address(ecs20));
         authorizeWriter(world, TotalSupplyComponentID, address(ecs20));
-
-        IUint256Component systems = world.systems();
-        ecs20.approveOperator(address(systems.approveSystem()));
-        ecs20.approveOperator(address(systems.burnFromSystem()));
-        ecs20.approveOperator(address(systems.transferFromSystem()));
     }
 }
