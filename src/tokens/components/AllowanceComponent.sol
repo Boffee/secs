@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import "./CounterBareComponent.sol";
+import "secs/components/CounterBareComponent.sol";
 
 uint256 constant AllowanceComponentID =
     uint256(keccak256("component.Allowance"));
