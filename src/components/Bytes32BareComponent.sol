@@ -139,6 +139,7 @@ abstract contract Bytes32BareComponent is IComponent, OwnableWritable {
      * @param value Value to set for the given entity.
      */
     function _set(uint256 entity, bytes memory value) internal virtual {
+        require(value.length <= 32, "Value does not fit in 32 bytes");
         // Store the entity's value;
         entityToValue[entity] = bytes32(value);
 
