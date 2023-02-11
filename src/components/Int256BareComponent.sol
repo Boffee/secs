@@ -1,0 +1,41 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.0;
+
+import "./Bytes32BareComponent.sol";
+
+/**
+ * Reference implementation of a component storing a uint256 value for each entity.
+ */
+contract Int256BareComponent is Bytes32BareComponent {
+    constructor(address world, uint256 id) Bytes32BareComponent(world, id) {}
+
+    function getSchema()
+        public
+        pure
+        override
+        returns (string[] memory keys, LibTypes.SchemaValue[] memory values)
+    {
+        keys = new string[](1);
+        values = new LibTypes.SchemaValue[](1);
+
+        keys[0] = "value";
+        values[0] = LibTypes.SchemaValue.UINT256;
+    }
+
+    function set(uint256 entity, int256 value) public virtual {
+        set(entity, abi.encode(value));
+    }
+
+    function getValue(uint256 entity)
+        public
+        view
+        virtual
+        returns (int256 value)
+    {
+        bytes memory rawValue = getRawValue(entity);
+
+        if (rawValue.length > 0) {
+            value = abi.decode(rawValue, (int256));
+        }
+    }
+}
