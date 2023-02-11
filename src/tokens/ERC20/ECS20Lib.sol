@@ -17,7 +17,7 @@ library ECS20Lib {
      * @dev Returns the name of the token.
      */
     function name(IUint256Component components)
-        public
+        internal
         view
         returns (string memory)
     {
@@ -30,7 +30,7 @@ library ECS20Lib {
      * name.
      */
     function symbol(IUint256Component components)
-        public
+        internal
         view
         returns (string memory)
     {
@@ -52,7 +52,7 @@ library ECS20Lib {
      * {IERC20-balanceOf} and {IERC20-transfer}.
      */
     function decimals(IUint256Component components)
-        public
+        internal
         view
         returns (uint8)
     {
@@ -64,7 +64,7 @@ library ECS20Lib {
      * @dev See {IERC20-totalSupply}.
      */
     function totalSupply(IUint256Component components)
-        public
+        internal
         view
         returns (uint256)
     {
@@ -79,7 +79,7 @@ library ECS20Lib {
         IUint256Component components,
         uint256 token,
         uint256 account
-    ) public view returns (uint256) {
+    ) internal view returns (uint256) {
         // return _balances[account];
         return getBalanceComponent(components).getValue(
             hashEntities(token, account)
@@ -94,7 +94,7 @@ library ECS20Lib {
         uint256 token,
         uint256 owner,
         uint256 spender
-    ) public view returns (uint256) {
+    ) internal view returns (uint256) {
         // return _allowances[owner][spender];
         return getAllowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
@@ -321,7 +321,7 @@ library ECS20Lib {
         uint256 owner,
         uint256 spender,
         uint256 addedValue
-    ) public returns (bool) {
+    ) internal returns (bool) {
         // address owner = _msgSender();
         // _approve(owner, spender, allowance(owner, spender) + addedValue);
         getAllowanceComponent(components).increment(
@@ -351,7 +351,7 @@ library ECS20Lib {
         uint256 owner,
         uint256 spender,
         uint256 subtractedValue
-    ) public returns (bool) {
+    ) internal returns (bool) {
         // address owner = _msgSender();
         // uint256 currentAllowance = allowance(owner, spender);
         // require(

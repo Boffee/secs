@@ -63,7 +63,7 @@ library ECS721Lib {
      * @dev See {IERC721Metadata-symbol}.
      */
     function symbol(IUint256Component components)
-        public
+        internal
         view
         returns (string memory)
     {
