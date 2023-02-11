@@ -23,6 +23,10 @@ contract BoolBareComponent is Bytes32BareComponent {
         set(entity, abi.encode(true));
     }
 
+    function set(uint256 entity, bool value) public virtual {
+        set(entity, abi.encode(value));
+    }
+
     function getValue(uint256 entity)
         public
         view
