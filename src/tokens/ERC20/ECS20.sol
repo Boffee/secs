@@ -3,17 +3,16 @@ pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
 import "solecs/utils.sol";
-import "secs/tokens/libraries/ComponentGetter.sol";
 import "secs/libraries/DelegateCall.sol";
 import "secs/systems/System.sol";
 import "secs/utils/entity.sol";
-import "./libraries/SystemGetter.sol";
+import "./systems/ApproveSystem.sol";
+import "./systems/BurnFromSystem.sol";
+import "./systems/TransferFromSystem.sol";
 import "./ECS20Lib.sol";
 import "./IECS20.sol";
 
 contract ECS20 is System, IECS20 {
-    using ComponentGetter for IUint256Component;
-    using SystemGetter for IUint256Component;
     using ECS20Lib for IUint256Component;
     using DelegateCall for address;
 
@@ -164,7 +163,7 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
-        address(SYSTEMS.approveSystem()).functionDelegateCall(
+        address(approveSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(thisEntity(), spender, amount)
             )
@@ -190,7 +189,7 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
-        address(SYSTEMS.transferFromSystem()).functionDelegateCall(
+        address(transferFromSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(thisEntity(), from, to, amount)
             )
@@ -213,7 +212,7 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
-        address(SYSTEMS.burnFromSystem()).functionDelegateCall(
+        address(burnFromSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(thisEntity(), account, amount)
             )
@@ -345,7 +344,7 @@ contract ECS20 is System, IECS20 {
 
     modifier onlyBalanceWriter() {
         require(
-            COMPONENTS.balanceComponent().writeAccess(_msgSender()),
+            balanceComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC20: only balance writer"
         );
         _;
@@ -353,7 +352,7 @@ contract ECS20 is System, IECS20 {
 
     modifier onlyAllowanceWriter() {
         require(
-            COMPONENTS.allowanceComponent().writeAccess(_msgSender()),
+            allowanceComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC20: only allowance writer"
         );
         _;

@@ -6,9 +6,6 @@ import "forge-std/console2.sol";
 import "./DeployLib.sol";
 
 contract DeployLibTest is Test {
-    using ComponentGetter for IUint256Component;
-    using SystemGetter for IUint256Component;
-
     IWorld world;
 
     function setUp() public virtual {
@@ -23,22 +20,22 @@ contract DeployLibTest is Test {
         IUint256Component components = world.components();
         IComponent component;
 
-        component = components.approvalComponent();
+        component = approvalComponent(components);
         assertEq(component.world(), address(world));
 
-        component = components.balanceComponent();
+        component = balanceComponent(components);
         assertEq(component.world(), address(world));
 
-        component = components.nameComponent();
+        component = nameComponent(components);
         assertEq(component.world(), address(world));
 
-        component = components.operatorApprovalComponent();
+        component = operatorApprovalComponent(components);
         assertEq(component.world(), address(world));
 
-        component = components.ownerComponent();
+        component = ownerComponent(components);
         assertEq(component.world(), address(world));
 
-        component = components.symbolComponent();
+        component = symbolComponent(components);
         assertEq(component.world(), address(world));
     }
 
@@ -46,19 +43,19 @@ contract DeployLibTest is Test {
         IUint256Component systems = world.systems();
         System system;
 
-        system = systems.approveSystem();
+        system = approveSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = systems.burnSystem();
+        system = burnSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = systems.safeTransferFromSystem();
+        system = safeTransferFromSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = systems.setApprovalForAllSystem();
+        system = setApprovalForAllSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = systems.transferFromSystem();
+        system = transferFromSystem(systems);
         assertEq(address(system.WORLD()), address(world));
     }
 }

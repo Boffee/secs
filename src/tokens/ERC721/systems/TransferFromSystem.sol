@@ -28,3 +28,10 @@ contract TransferFromSystem is System {
         COMPONENTS._transfer(from, to, entity);
     }
 }
+
+function transferFromSystem(IUint256Component systems)
+    view
+    returns (TransferFromSystem)
+{
+    return TransferFromSystem(getAddressById(systems, TransferFromSystemID));
+}

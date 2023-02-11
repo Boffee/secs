@@ -8,7 +8,6 @@ import "secs/systems/System.sol";
 uint256 constant ApproveSystemID = uint256(keccak256("system.ERC721.Approve"));
 
 contract ApproveSystem is System {
-    using ComponentGetter for IUint256Component;
     using ECS721Lib for IUint256Component;
 
     constructor(IWorld world) System(world, ApproveSystemID) {}
@@ -19,11 +18,7 @@ contract ApproveSystem is System {
         executeTyped(to, entity);
     }
 
-    function executeTyped(uint256 to, uint256 entity)
-        public
-        virtual
-        returns (bytes memory)
-    {
+    function executeTyped(uint256 to, uint256 entity) public virtual {
         uint256 owner = COMPONENTS.ownerOf(entity);
         uint256 sender = addressToEntity(_msgSender());
         uint256 token = getEntityToken(entity);
@@ -35,4 +30,11 @@ contract ApproveSystem is System {
         );
         COMPONENTS._approve(to, entity);
     }
+}
+
+function approveSystem(IUint256Component systems)
+    view
+    returns (ApproveSystem)
+{
+    return ApproveSystem(getAddressById(systems, ApproveSystemID));
 }

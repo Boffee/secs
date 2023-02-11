@@ -4,12 +4,19 @@ pragma solidity >=0.8.0;
 import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
 import "@openzeppelin/contracts/interfaces/IERC721.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
-import "secs/tokens/libraries/ComponentGetter.sol";
+import "solecs/interfaces/IUint256Component.sol";
+import "solecs/utils.sol";
 import "secs/utils/entity.sol";
+import "../components/ApprovalComponent.sol";
+import "../components/BalanceComponent.sol";
+import "../components/DescriptionComponent.sol";
+import "../components/NameComponent.sol";
+import "../components/OperatorApprovalComponent.sol";
+import "../components/OwnerComponent.sol";
+import "../components/SymbolComponent.sol";
 import "./IECS721Hooks.sol";
 
 library ECS721Lib {
-    using ComponentGetter for IUint256Component;
     using Address for address;
 
     /**
@@ -21,7 +28,7 @@ library ECS721Lib {
         returns (uint256)
     {
         require(owner != 0, "ERC721: address zero is not a valid owner");
-        return components.balanceComponent().getValue(
+        return balanceComponent(components).getValue(
             hashEntities(addressToEntity(address(this)), owner)
         );
     }
@@ -48,7 +55,7 @@ library ECS721Lib {
         returns (string memory)
     {
         return
-            components.nameComponent().getValue(addressToEntity(address(this)));
+            nameComponent(components).getValue(addressToEntity(address(this)));
     }
 
     /**
@@ -59,9 +66,8 @@ library ECS721Lib {
         view
         returns (string memory)
     {
-        return components.symbolComponent().getValue(
-            addressToEntity(address(this))
-        );
+        return
+            symbolComponent(components).getValue(addressToEntity(address(this)));
     }
 
     /**
@@ -72,7 +78,7 @@ library ECS721Lib {
         view
         returns (uint256)
     {
-        return components.approvalComponent().getValue(entity);
+        return approvalComponent(components).getValue(entity);
     }
 
     /**
@@ -84,7 +90,7 @@ library ECS721Lib {
         uint256 owner,
         uint256 operator
     ) internal view returns (bool) {
-        return components.operatorApprovalComponent().getValue(
+        return operatorApprovalComponent(components).getValue(
             hashEntities(token, owner, operator)
         );
     }
@@ -92,15 +98,13 @@ library ECS721Lib {
     function _setName(IUint256Component components, string memory name_)
         internal
     {
-        components.nameComponent().set(addressToEntity(address(this)), name_);
+        nameComponent(components).set(addressToEntity(address(this)), name_);
     }
 
     function _setSymbol(IUint256Component components, string memory symbol_)
         internal
     {
-        components.symbolComponent().set(
-            addressToEntity(address(this)), symbol_
-        );
+        symbolComponent(components).set(addressToEntity(address(this)), symbol_);
     }
 
     /**
@@ -150,7 +154,7 @@ library ECS721Lib {
         view
         returns (uint256)
     {
-        return components.ownerComponent().getValue(entity);
+        return ownerComponent(components).getValue(entity);
     }
 
     /**
@@ -253,12 +257,12 @@ library ECS721Lib {
         require(!_exists(components, entity), "ERC721: token already minted");
 
         // Increment balance
-        components.balanceComponent().increment(
+        balanceComponent(components).increment(
             hashEntities(getEntityToken(entity), to), 1
         );
 
         // Set owner
-        components.ownerComponent().set(entity, to);
+        ownerComponent(components).set(entity, to);
 
         _afterTokenTransfer(0, to, entity);
     }
@@ -275,16 +279,16 @@ library ECS721Lib {
      * Emits a {Transfer} event.
      */
     function _burn(IUint256Component components, uint256 entity) internal {
-        OwnerComponent ownerComponent = components.ownerComponent();
+        OwnerComponent ownerComponent = ownerComponent(components);
         uint256 owner = ownerComponent.getValue(entity);
 
         _beforeTokenTransfer(owner, 0, entity);
 
         // Clear approvals
-        components.approvalComponent().remove(entity);
+        approvalComponent(components).remove(entity);
 
         // Decrement balance
-        components.balanceComponent().decrement(
+        balanceComponent(components).decrement(
             hashEntities(getEntityToken(entity), owner), 1
         );
 
@@ -326,16 +330,16 @@ library ECS721Lib {
         );
 
         // Clear approvals from the previous owner
-        components.approvalComponent().remove(entity);
+        approvalComponent(components).remove(entity);
 
         // Move balance from old owner to new owner
         uint256 token = getEntityToken(entity);
-        BalanceComponent balanceComponent = components.balanceComponent();
+        BalanceComponent balanceComponent = balanceComponent(components);
         balanceComponent.decrement(hashEntities(token, from), 1);
         balanceComponent.increment(hashEntities(token, to), 1);
 
         // Update owner
-        components.ownerComponent().set(entity, to);
+        ownerComponent(components).set(entity, to);
 
         _afterTokenTransfer(from, to, entity);
     }
@@ -348,7 +352,7 @@ library ECS721Lib {
     function _approve(IUint256Component components, uint256 to, uint256 entity)
         internal
     {
-        components.approvalComponent().set(entity, to);
+        approvalComponent(components).set(entity, to);
         _afterApproval(ownerOf(components, entity), to, entity);
     }
 
@@ -367,11 +371,11 @@ library ECS721Lib {
         require(owner != operator, "ERC721: approve to caller");
 
         if (approved) {
-            components.operatorApprovalComponent().set(
+            operatorApprovalComponent(components).set(
                 hashEntities(token, owner, operator)
             );
         } else {
-            components.operatorApprovalComponent().remove(
+            operatorApprovalComponent(components).remove(
                 hashEntities(token, owner, operator)
             );
         }

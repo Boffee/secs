@@ -3,13 +3,9 @@ pragma solidity >=0.8.0;
 
 import "forge-std/console2.sol";
 import "solecs/World.sol";
-import "secs/tokens/ERC20/libraries/SystemGetter.sol";
-import "secs/tokens/libraries/ComponentGetter.sol";
 import "./mocks/MockECS20.sol";
 
 library DeployLib {
-    using SystemGetter for IUint256Component;
-
     function deploy() internal returns (IWorld world) {
         world = new World();
         world.init();

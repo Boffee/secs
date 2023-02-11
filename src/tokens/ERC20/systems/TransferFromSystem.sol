@@ -34,3 +34,10 @@ contract TransferFromSystem is System {
         return true;
     }
 }
+
+function transferFromSystem(IUint256Component systems)
+    view
+    returns (TransferFromSystem)
+{
+    return TransferFromSystem(getAddressById(systems, TransferFromSystemID));
+}

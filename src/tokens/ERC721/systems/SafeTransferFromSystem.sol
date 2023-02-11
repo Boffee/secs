@@ -34,3 +34,12 @@ contract SafeTransferFromSystem is System {
         COMPONENTS._safeTransfer(sender, from, to, entity, data);
     }
 }
+
+function safeTransferFromSystem(IUint256Component systems)
+    view
+    returns (SafeTransferFromSystem)
+{
+    return SafeTransferFromSystem(
+        getAddressById(systems, SafeTransferFromSystemID)
+    );
+}

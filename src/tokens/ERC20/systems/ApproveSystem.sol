@@ -8,7 +8,6 @@ import "secs/systems/System.sol";
 uint256 constant ApproveSystemID = uint256(keccak256("system.ERC20.Approve"));
 
 contract ApproveSystem is System {
-    using ComponentGetter for IUint256Component;
     using ECS20Lib for IUint256Component;
 
     constructor(IWorld world) System(world, ApproveSystemID) {}
@@ -30,4 +29,11 @@ contract ApproveSystem is System {
         );
         return true;
     }
+}
+
+function approveSystem(IUint256Component systems)
+    view
+    returns (ApproveSystem)
+{
+    return ApproveSystem(getAddressById(systems, ApproveSystemID));
 }

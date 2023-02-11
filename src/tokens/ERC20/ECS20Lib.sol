@@ -2,13 +2,17 @@
 pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
-import "secs/tokens/libraries/ComponentGetter.sol";
+import "solecs/interfaces/IUint256Component.sol";
+import "solecs/utils.sol";
 import "secs/utils/entity.sol";
+import "../components/AllowanceComponent.sol";
+import "../components/BalanceComponent.sol";
+import "../components/NameComponent.sol";
+import "../components/SymbolComponent.sol";
+import "../components/TotalSupplyComponent.sol";
 import "./IECS20Hooks.sol";
 
 library ECS20Lib {
-    using ComponentGetter for IUint256Component;
-
     /**
      * @dev Returns the name of the token.
      */
@@ -18,7 +22,7 @@ library ECS20Lib {
         returns (string memory)
     {
         // return _name;
-        return components.nameComponent().getValue(thisEntity());
+        return nameComponent(components).getValue(thisEntity());
     }
 
     /**
@@ -31,7 +35,7 @@ library ECS20Lib {
         returns (string memory)
     {
         // return _symbol;
-        return components.symbolComponent().getValue(thisEntity());
+        return symbolComponent(components).getValue(thisEntity());
     }
 
     /**
@@ -65,7 +69,7 @@ library ECS20Lib {
         returns (uint256)
     {
         // return _totalSupply;
-        return components.totalSupplyComponent().getValue(thisEntity());
+        return totalSupplyComponent(components).getValue(thisEntity());
     }
 
     /**
@@ -78,7 +82,7 @@ library ECS20Lib {
     ) public view returns (uint256) {
         // return _balances[account];
         return
-            components.balanceComponent().getValue(hashEntities(token, account));
+            balanceComponent(components).getValue(hashEntities(token, account));
     }
 
     /**
@@ -91,7 +95,7 @@ library ECS20Lib {
         uint256 spender
     ) public view returns (uint256) {
         // return _allowances[owner][spender];
-        return components.allowanceComponent().getValue(
+        return allowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
         );
     }
@@ -125,7 +129,7 @@ library ECS20Lib {
         // _beforeTokenTransfer(from, to, amount);
         _beforeTokenTransfer(token, from, to, amount);
 
-        BalanceComponent balanceComponent = components.balanceComponent();
+        BalanceComponent balanceComponent = balanceComponent(components);
         // uint256 fromBalance = _balances[from];
         // require(fromBalance >= amount, "ERC20: transfer amount exceeds balance");
         uint256 fromBalance =
@@ -169,12 +173,12 @@ library ECS20Lib {
         _beforeTokenTransfer(token, 0, account, amount);
 
         // _totalSupply += amount;
-        components.totalSupplyComponent().increment(token, amount);
+        totalSupplyComponent(components).increment(token, amount);
         // unchecked {
         //     // Overflow not possible: balance + amount is at most totalSupply + amount, which is checked above.
         //     _balances[account] += amount;
         // }
-        components.balanceComponent().increment(
+        balanceComponent(components).increment(
             hashEntities(token, account), amount
         );
 
@@ -209,7 +213,7 @@ library ECS20Lib {
 
         // uint256 accountBalance = _balances[account];
         // require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
-        BalanceComponent balanceComponent = components.balanceComponent();
+        BalanceComponent balanceComponent = balanceComponent(components);
         uint256 entityBalance =
             balanceComponent.getValue(hashEntities(token, account));
         require(entityBalance >= amount, "ERC20: burn amount exceeds balance");
@@ -222,7 +226,7 @@ library ECS20Lib {
         balanceComponent.set(
             hashEntities(token, account), entityBalance - amount
         );
-        components.totalSupplyComponent().decrement(token, amount);
+        totalSupplyComponent(components).decrement(token, amount);
 
         // emit Transfer(account, address(0), amount);
 
@@ -256,7 +260,7 @@ library ECS20Lib {
         require(spender != 0, "ERC20: approve to the zero address");
 
         // _allowances[owner][spender] = amount;
-        components.allowanceComponent().set(
+        allowanceComponent(components).set(
             hashEntities(token, owner, spender), amount
         );
 
@@ -280,7 +284,7 @@ library ECS20Lib {
         uint256 amount
     ) internal {
         // uint256 currentAllowance = allowance(owner, spender);
-        uint256 currentAllowance = components.allowanceComponent().getValue(
+        uint256 currentAllowance = allowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
         );
 
@@ -319,7 +323,7 @@ library ECS20Lib {
     ) public returns (bool) {
         // address owner = _msgSender();
         // _approve(owner, spender, allowance(owner, spender) + addedValue);
-        components.allowanceComponent().increment(
+        allowanceComponent(components).increment(
             hashEntities(token, owner, spender), addedValue
         );
         // return true;
@@ -353,7 +357,7 @@ library ECS20Lib {
         //     currentAllowance >= subtractedValue,
         //     "ERC20: decreased allowance below zero"
         // );
-        uint256 currentAllowance = components.allowanceComponent().getValue(
+        uint256 currentAllowance = allowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
         );
         require(
@@ -377,15 +381,13 @@ library ECS20Lib {
     function _setName(IUint256Component components, string memory name_)
         internal
     {
-        components.nameComponent().set(addressToEntity(address(this)), name_);
+        nameComponent(components).set(addressToEntity(address(this)), name_);
     }
 
     function _setSymbol(IUint256Component components, string memory symbol_)
         internal
     {
-        components.symbolComponent().set(
-            addressToEntity(address(this)), symbol_
-        );
+        symbolComponent(components).set(addressToEntity(address(this)), symbol_);
     }
 
     /**

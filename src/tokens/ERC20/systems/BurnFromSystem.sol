@@ -8,7 +8,6 @@ import "secs/systems/System.sol";
 uint256 constant BurnFromSystemID = uint256(keccak256("system.ERC20.BurnFrom"));
 
 contract BurnFromSystem is System {
-    using ComponentGetter for IUint256Component;
     using ECS20Lib for IUint256Component;
 
     constructor(IWorld world) System(world, BurnFromSystemID) {}
@@ -32,4 +31,11 @@ contract BurnFromSystem is System {
         COMPONENTS._burn(token, account, amount);
         return true;
     }
+}
+
+function burnFromSystem(IUint256Component systems)
+    view
+    returns (BurnFromSystem)
+{
+    return BurnFromSystem(getAddressById(systems, BurnFromSystemID));
 }

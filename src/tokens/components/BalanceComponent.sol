@@ -2,6 +2,8 @@
 pragma solidity >=0.8.0;
 
 import "secs/components/CounterBareComponent.sol";
+import "solecs/interfaces/IUint256Component.sol";
+import "solecs/utils.sol";
 
 uint256 constant BalanceComponentID = uint256(keccak256("component.Balance"));
 
@@ -9,4 +11,11 @@ contract BalanceComponent is CounterBareComponent {
     constructor(address world)
         CounterBareComponent(world, BalanceComponentID)
     {}
+}
+
+function balanceComponent(IUint256Component components)
+    view
+    returns (BalanceComponent)
+{
+    return BalanceComponent(getAddressById(components, BalanceComponentID));
 }

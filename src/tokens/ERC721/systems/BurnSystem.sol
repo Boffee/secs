@@ -8,7 +8,6 @@ import "secs/systems/System.sol";
 uint256 constant BurnSystemID = uint256(keccak256("system.ERC721.Burn"));
 
 contract BurnSystem is System {
-    using ComponentGetter for IUint256Component;
     using ECS721Lib for IUint256Component;
 
     constructor(IWorld world) System(world, BurnSystemID) {}
@@ -19,15 +18,15 @@ contract BurnSystem is System {
         executeTyped(entity);
     }
 
-    function executeTyped(uint256 entity)
-        public
-        virtual
-        returns (bytes memory)
-    {
+    function executeTyped(uint256 entity) public virtual {
         require(
             COMPONENTS._isApprovedOrOwner(addressToEntity(_msgSender()), entity),
             "Caller is not entity owner or approved"
         );
         COMPONENTS._burn(entity);
     }
+}
+
+function burnSystem(IUint256Component systems) view returns (BurnSystem) {
+    return BurnSystem(getAddressById(systems, BurnSystemID));
 }

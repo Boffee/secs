@@ -4,16 +4,17 @@ pragma solidity >=0.8.0;
 import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
 import "solecs/interfaces/IWorld.sol";
 import "solecs/utils.sol";
-import "secs/tokens/libraries/ComponentGetter.sol";
 import "secs/libraries/DelegateCall.sol";
 import "secs/utils/entity.sol";
-import "./libraries/SystemGetter.sol";
+import "./systems/ApproveSystem.sol";
+import "./systems/BurnSystem.sol";
+import "./systems/SafeTransferFromSystem.sol";
+import "./systems/SetApprovalForAllSystem.sol";
+import "./systems/TransferFromSystem.sol";
 import "./ECS721Lib.sol";
 import "./IECS721.sol";
 
 contract ECS721 is System, IECS721 {
-    using ComponentGetter for IUint256Component;
-    using SystemGetter for IUint256Component;
     using ECS721Lib for IUint256Component;
     using DelegateCall for address;
 
@@ -29,11 +30,7 @@ contract ECS721 is System, IECS721 {
         executeTyped(to, entity);
     }
 
-    function executeTyped(uint256 to, uint256 entity)
-        public
-        virtual
-        returns (bytes memory)
-    {
+    function executeTyped(uint256 to, uint256 entity) public virtual {
         _mint(to, entity);
     }
 
@@ -126,7 +123,7 @@ contract ECS721 is System, IECS721 {
     }
 
     function approve(uint256 to, uint256 tokenId) public virtual override {
-        address(SYSTEMS.approveSystem()).functionDelegateCall(
+        address(approveSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(to, toEntity(tokenId))
             )
@@ -162,7 +159,7 @@ contract ECS721 is System, IECS721 {
         virtual
         override
     {
-        address(SYSTEMS.setApprovalForAllSystem()).functionDelegateCall(
+        address(setApprovalForAllSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(thisEntity(), operator, approved)
             )
@@ -194,7 +191,7 @@ contract ECS721 is System, IECS721 {
     }
 
     function burn(uint256 tokenId) public virtual override {
-        address(SYSTEMS.burnSystem()).functionDelegateCall(
+        address(burnSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(toEntity(tokenId))
             )
@@ -217,7 +214,7 @@ contract ECS721 is System, IECS721 {
         virtual
         override
     {
-        address(SYSTEMS.transferFromSystem()).functionDelegateCall(
+        address(transferFromSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(from, to, toEntity(tokenId))
             )
@@ -263,7 +260,7 @@ contract ECS721 is System, IECS721 {
         uint256 tokenId,
         bytes memory data
     ) public virtual override {
-        address(SYSTEMS.safeTransferFromSystem()).functionDelegateCall(
+        address(safeTransferFromSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(from, to, toEntity(tokenId), data)
             )
@@ -369,7 +366,7 @@ contract ECS721 is System, IECS721 {
 
     modifier onlyOwnerWriter() {
         require(
-            COMPONENTS.ownerComponent().writeAccess(_msgSender()),
+            ownerComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC721: only owner writer"
         );
         _;
@@ -377,7 +374,7 @@ contract ECS721 is System, IECS721 {
 
     modifier onlyApprovalWriter() {
         require(
-            COMPONENTS.approvalComponent().writeAccess(_msgSender()),
+            approvalComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC721: only approval writer"
         );
         _;
@@ -385,7 +382,7 @@ contract ECS721 is System, IECS721 {
 
     modifier onlyOperatorApprovalWriter() {
         require(
-            COMPONENTS.operatorApprovalComponent().writeAccess(_msgSender()),
+            operatorApprovalComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC721: only operator approval writer"
         );
         _;

@@ -23,10 +23,18 @@ contract SetApprovalForAllSystem is System {
     function executeTyped(uint256 token, uint256 operator, bool approved)
         public
         virtual
-        returns (bytes memory)
     {
         COMPONENTS._setApprovalForAll(
             token, addressToEntity(_msgSender()), operator, approved
         );
     }
+}
+
+function setApprovalForAllSystem(IUint256Component systems)
+    view
+    returns (SetApprovalForAllSystem)
+{
+    return SetApprovalForAllSystem(
+        getAddressById(systems, SetApprovalForAllSystemID)
+    );
 }
