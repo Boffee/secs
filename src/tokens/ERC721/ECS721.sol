@@ -34,7 +34,7 @@ contract ECS721 is System, IECS721 {
         virtual
         returns (bytes memory)
     {
-        COMPONENTS._mint(to, entity);
+        _mint(to, entity);
     }
 
     /**
@@ -62,7 +62,17 @@ contract ECS721 is System, IECS721 {
         override
         returns (uint256)
     {
-        return COMPONENTS.balanceOf(addressToEntity(owner));
+        return balanceOf(addressToEntity(owner));
+    }
+
+    function balanceOf(uint256 owner)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
+        return COMPONENTS.balanceOf(owner);
     }
 
     /**
@@ -104,7 +114,7 @@ contract ECS721 is System, IECS721 {
     {
         // return
         //     COMPONENTS.tokenURIComponent().getValue(
-        //         addressToEntity(address(this))
+        //         thisEntity()
         //     );
     }
 
@@ -112,10 +122,13 @@ contract ECS721 is System, IECS721 {
      * @dev See {IERC721-approve}.
      */
     function approve(address to, uint256 tokenId) public virtual override {
+        approve(addressToEntity(to), tokenId);
+    }
+
+    function approve(uint256 to, uint256 tokenId) public virtual override {
         address(SYSTEMS.approveSystem()).functionDelegateCall(
             abi.encodeWithSelector(
-                EXECUTE_SELECTOR,
-                abi.encode(addressToEntity(to), toEntity(tokenId))
+                EXECUTE_SELECTOR, abi.encode(to, toEntity(tokenId))
             )
         );
     }
@@ -141,14 +154,17 @@ contract ECS721 is System, IECS721 {
         virtual
         override
     {
+        setApprovalForAll(addressToEntity(operator), approved);
+    }
+
+    function setApprovalForAll(uint256 operator, bool approved)
+        public
+        virtual
+        override
+    {
         address(SYSTEMS.setApprovalForAllSystem()).functionDelegateCall(
             abi.encodeWithSelector(
-                EXECUTE_SELECTOR,
-                abi.encode(
-                    addressToEntity(address(this)),
-                    addressToEntity(operator),
-                    approved
-                )
+                EXECUTE_SELECTOR, abi.encode(thisEntity(), operator, approved)
             )
         );
     }
@@ -163,11 +179,18 @@ contract ECS721 is System, IECS721 {
         override
         returns (bool)
     {
-        return COMPONENTS.isApprovedForAll(
-            addressToEntity(address(this)),
-            addressToEntity(owner),
-            addressToEntity(operator)
-        );
+        return
+            isApprovedForAll(addressToEntity(owner), addressToEntity(operator));
+    }
+
+    function isApprovedForAll(uint256 owner, uint256 operator)
+        public
+        view
+        virtual
+        override
+        returns (bool)
+    {
+        return COMPONENTS.isApprovedForAll(thisEntity(), owner, operator);
     }
 
     function burn(uint256 tokenId) public virtual override {
@@ -186,14 +209,17 @@ contract ECS721 is System, IECS721 {
         virtual
         override
     {
+        transferFrom(addressToEntity(from), addressToEntity(to), tokenId);
+    }
+
+    function transferFrom(uint256 from, uint256 to, uint256 tokenId)
+        public
+        virtual
+        override
+    {
         address(SYSTEMS.transferFromSystem()).functionDelegateCall(
             abi.encodeWithSelector(
-                EXECUTE_SELECTOR,
-                abi.encode(
-                    addressToEntity(from),
-                    addressToEntity(to),
-                    toEntity(tokenId)
-                )
+                EXECUTE_SELECTOR, abi.encode(from, to, toEntity(tokenId))
             )
         );
     }
@@ -202,6 +228,14 @@ contract ECS721 is System, IECS721 {
      * @dev See {IERC721-safeTransferFrom}.
      */
     function safeTransferFrom(address from, address to, uint256 tokenId)
+        public
+        virtual
+        override
+    {
+        safeTransferFrom(from, to, tokenId, "");
+    }
+
+    function safeTransferFrom(uint256 from, uint256 to, uint256 tokenId)
         public
         virtual
         override
@@ -218,15 +252,20 @@ contract ECS721 is System, IECS721 {
         uint256 tokenId,
         bytes memory data
     ) public virtual override {
+        safeTransferFrom(
+            addressToEntity(from), addressToEntity(to), tokenId, data
+        );
+    }
+
+    function safeTransferFrom(
+        uint256 from,
+        uint256 to,
+        uint256 tokenId,
+        bytes memory data
+    ) public virtual override {
         address(SYSTEMS.safeTransferFromSystem()).functionDelegateCall(
             abi.encodeWithSelector(
-                EXECUTE_SELECTOR,
-                abi.encode(
-                    addressToEntity(from),
-                    addressToEntity(to),
-                    toEntity(tokenId),
-                    data
-                )
+                EXECUTE_SELECTOR, abi.encode(from, to, toEntity(tokenId), data)
             )
         );
     }
@@ -279,14 +318,20 @@ contract ECS721 is System, IECS721 {
     }
 
     function _mint(address to, uint256 tokenId) internal virtual {
-        COMPONENTS._mint(addressToEntity(to), toEntity(tokenId));
+        _mint(addressToEntity(to), tokenId);
+    }
+
+    function _mint(uint256 to, uint256 tokenId) internal virtual {
+        COMPONENTS._mint(to, toEntity(tokenId));
     }
 
     function _safeMint(address to, uint256 tokenId) internal virtual {
+        _safeMint(addressToEntity(to), tokenId);
+    }
+
+    function _safeMint(uint256 to, uint256 tokenId) internal virtual {
         COMPONENTS._safeMint(
-            addressToEntity(_msgSender()),
-            addressToEntity(to),
-            toEntity(tokenId)
+            addressToEntity(_msgSender()), to, toEntity(tokenId)
         );
     }
 
@@ -294,11 +339,15 @@ contract ECS721 is System, IECS721 {
         internal
         virtual
     {
+        _safeMint(addressToEntity(to), tokenId, data);
+    }
+
+    function _safeMint(uint256 to, uint256 tokenId, bytes memory data)
+        internal
+        virtual
+    {
         COMPONENTS._safeMint(
-            addressToEntity(_msgSender()),
-            addressToEntity(to),
-            toEntity(tokenId),
-            data
+            addressToEntity(_msgSender()), to, toEntity(tokenId), data
         );
     }
 
@@ -308,6 +357,14 @@ contract ECS721 is System, IECS721 {
 
     function setSymbol(string memory symbol_) public virtual onlyOwner {
         COMPONENTS._setSymbol(symbol_);
+    }
+
+    /**
+     * @dev return this contract entity
+     * @return entity
+     */
+    function thisEntity() public view returns (uint256) {
+        return addressToEntity(address(this));
     }
 
     modifier onlyOwnerWriter() {

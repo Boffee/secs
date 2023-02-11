@@ -6,4 +6,27 @@ import "./IECS721Hooks.sol";
 
 interface IECS721 is IERC721Metadata, IECS721Hooks {
     function burn(uint256 tokenId) external;
+
+    function balanceOf(uint256 account) external view returns (uint256);
+
+    function safeTransferFrom(
+        uint256 from,
+        uint256 to,
+        uint256 tokenId,
+        bytes calldata data
+    ) external;
+
+    function safeTransferFrom(uint256 from, uint256 to, uint256 tokenId)
+        external;
+
+    function transferFrom(uint256 from, uint256 to, uint256 tokenId) external;
+
+    function approve(uint256 to, uint256 tokenId) external;
+
+    function setApprovalForAll(uint256 operator, bool _approved) external;
+
+    function isApprovedForAll(uint256 owner, uint256 operator)
+        external
+        view
+        returns (bool);
 }
