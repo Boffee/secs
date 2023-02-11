@@ -31,7 +31,7 @@ contract ApproveSystem is System {
     }
 }
 
-function approveSystem(IUint256Component systems)
+function getApproveSystem(IUint256Component systems)
     view
     returns (ApproveSystem)
 {

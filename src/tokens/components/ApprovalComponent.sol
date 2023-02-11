@@ -13,7 +13,7 @@ contract ApprovalComponent is Uint256BareComponent {
     {}
 }
 
-function approvalComponent(IUint256Component components)
+function getApprovalComponent(IUint256Component components)
     view
     returns (ApprovalComponent)
 {

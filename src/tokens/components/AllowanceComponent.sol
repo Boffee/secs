@@ -14,7 +14,7 @@ contract AllowanceComponent is CounterBareComponent {
     {}
 }
 
-function allowanceComponent(IUint256Component components)
+function getAllowanceComponent(IUint256Component components)
     view
     returns (AllowanceComponent)
 {

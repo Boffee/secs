@@ -14,7 +14,7 @@ contract TotalSupplyComponent is CounterBareComponent {
     {}
 }
 
-function totalSupplyComponent(IUint256Component components)
+function getTotalSupplyComponent(IUint256Component components)
     view
     returns (TotalSupplyComponent)
 {

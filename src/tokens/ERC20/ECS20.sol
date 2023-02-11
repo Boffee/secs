@@ -163,7 +163,7 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
-        address(approveSystem(SYSTEMS)).functionDelegateCall(
+        address(getApproveSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(thisEntity(), spender, amount)
             )
@@ -189,7 +189,7 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
-        address(transferFromSystem(SYSTEMS)).functionDelegateCall(
+        address(getTransferFromSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(thisEntity(), from, to, amount)
             )
@@ -212,7 +212,7 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
-        address(burnFromSystem(SYSTEMS)).functionDelegateCall(
+        address(getBurnFromSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(thisEntity(), account, amount)
             )
@@ -344,7 +344,7 @@ contract ECS20 is System, IECS20 {
 
     modifier onlyBalanceWriter() {
         require(
-            balanceComponent(COMPONENTS).writeAccess(_msgSender()),
+            getBalanceComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC20: only balance writer"
         );
         _;
@@ -352,7 +352,7 @@ contract ECS20 is System, IECS20 {
 
     modifier onlyAllowanceWriter() {
         require(
-            allowanceComponent(COMPONENTS).writeAccess(_msgSender()),
+            getAllowanceComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC20: only allowance writer"
         );
         _;

@@ -28,7 +28,7 @@ library ECS721Lib {
         returns (uint256)
     {
         require(owner != 0, "ERC721: address zero is not a valid owner");
-        return balanceComponent(components).getValue(
+        return getBalanceComponent(components).getValue(
             hashEntities(addressToEntity(address(this)), owner)
         );
     }
@@ -54,8 +54,9 @@ library ECS721Lib {
         view
         returns (string memory)
     {
-        return
-            nameComponent(components).getValue(addressToEntity(address(this)));
+        return getNameComponent(components).getValue(
+            addressToEntity(address(this))
+        );
     }
 
     /**
@@ -66,8 +67,9 @@ library ECS721Lib {
         view
         returns (string memory)
     {
-        return
-            symbolComponent(components).getValue(addressToEntity(address(this)));
+        return getSymbolComponent(components).getValue(
+            addressToEntity(address(this))
+        );
     }
 
     /**
@@ -78,7 +80,7 @@ library ECS721Lib {
         view
         returns (uint256)
     {
-        return approvalComponent(components).getValue(entity);
+        return getApprovalComponent(components).getValue(entity);
     }
 
     /**
@@ -90,7 +92,7 @@ library ECS721Lib {
         uint256 owner,
         uint256 operator
     ) internal view returns (bool) {
-        return operatorApprovalComponent(components).getValue(
+        return getOperatorApprovalComponent(components).getValue(
             hashEntities(token, owner, operator)
         );
     }
@@ -98,13 +100,15 @@ library ECS721Lib {
     function _setName(IUint256Component components, string memory name_)
         internal
     {
-        nameComponent(components).set(addressToEntity(address(this)), name_);
+        getNameComponent(components).set(addressToEntity(address(this)), name_);
     }
 
     function _setSymbol(IUint256Component components, string memory symbol_)
         internal
     {
-        symbolComponent(components).set(addressToEntity(address(this)), symbol_);
+        getSymbolComponent(components).set(
+            addressToEntity(address(this)), symbol_
+        );
     }
 
     /**
@@ -154,7 +158,7 @@ library ECS721Lib {
         view
         returns (uint256)
     {
-        return ownerComponent(components).getValue(entity);
+        return getOwnerComponent(components).getValue(entity);
     }
 
     /**
@@ -257,12 +261,12 @@ library ECS721Lib {
         require(!_exists(components, entity), "ERC721: token already minted");
 
         // Increment balance
-        balanceComponent(components).increment(
+        getBalanceComponent(components).increment(
             hashEntities(getEntityToken(entity), to), 1
         );
 
         // Set owner
-        ownerComponent(components).set(entity, to);
+        getOwnerComponent(components).set(entity, to);
 
         _afterTokenTransfer(0, to, entity);
     }
@@ -279,16 +283,16 @@ library ECS721Lib {
      * Emits a {Transfer} event.
      */
     function _burn(IUint256Component components, uint256 entity) internal {
-        OwnerComponent ownerComponent = ownerComponent(components);
+        OwnerComponent ownerComponent = getOwnerComponent(components);
         uint256 owner = ownerComponent.getValue(entity);
 
         _beforeTokenTransfer(owner, 0, entity);
 
         // Clear approvals
-        approvalComponent(components).remove(entity);
+        getApprovalComponent(components).remove(entity);
 
         // Decrement balance
-        balanceComponent(components).decrement(
+        getBalanceComponent(components).decrement(
             hashEntities(getEntityToken(entity), owner), 1
         );
 
@@ -330,16 +334,16 @@ library ECS721Lib {
         );
 
         // Clear approvals from the previous owner
-        approvalComponent(components).remove(entity);
+        getApprovalComponent(components).remove(entity);
 
         // Move balance from old owner to new owner
         uint256 token = getEntityToken(entity);
-        BalanceComponent balanceComponent = balanceComponent(components);
+        BalanceComponent balanceComponent = getBalanceComponent(components);
         balanceComponent.decrement(hashEntities(token, from), 1);
         balanceComponent.increment(hashEntities(token, to), 1);
 
         // Update owner
-        ownerComponent(components).set(entity, to);
+        getOwnerComponent(components).set(entity, to);
 
         _afterTokenTransfer(from, to, entity);
     }
@@ -352,7 +356,7 @@ library ECS721Lib {
     function _approve(IUint256Component components, uint256 to, uint256 entity)
         internal
     {
-        approvalComponent(components).set(entity, to);
+        getApprovalComponent(components).set(entity, to);
         _afterApproval(ownerOf(components, entity), to, entity);
     }
 
@@ -371,11 +375,11 @@ library ECS721Lib {
         require(owner != operator, "ERC721: approve to caller");
 
         if (approved) {
-            operatorApprovalComponent(components).set(
+            getOperatorApprovalComponent(components).set(
                 hashEntities(token, owner, operator)
             );
         } else {
-            operatorApprovalComponent(components).remove(
+            getOperatorApprovalComponent(components).remove(
                 hashEntities(token, owner, operator)
             );
         }

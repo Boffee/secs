@@ -123,7 +123,7 @@ contract ECS721 is System, IECS721 {
     }
 
     function approve(uint256 to, uint256 tokenId) public virtual override {
-        address(approveSystem(SYSTEMS)).functionDelegateCall(
+        address(getApproveSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(to, toEntity(tokenId))
             )
@@ -159,7 +159,7 @@ contract ECS721 is System, IECS721 {
         virtual
         override
     {
-        address(setApprovalForAllSystem(SYSTEMS)).functionDelegateCall(
+        address(getSetApprovalForAllSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(thisEntity(), operator, approved)
             )
@@ -191,7 +191,7 @@ contract ECS721 is System, IECS721 {
     }
 
     function burn(uint256 tokenId) public virtual override {
-        address(burnSystem(SYSTEMS)).functionDelegateCall(
+        address(getBurnSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(toEntity(tokenId))
             )
@@ -214,7 +214,7 @@ contract ECS721 is System, IECS721 {
         virtual
         override
     {
-        address(transferFromSystem(SYSTEMS)).functionDelegateCall(
+        address(getTransferFromSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(from, to, toEntity(tokenId))
             )
@@ -260,7 +260,7 @@ contract ECS721 is System, IECS721 {
         uint256 tokenId,
         bytes memory data
     ) public virtual override {
-        address(safeTransferFromSystem(SYSTEMS)).functionDelegateCall(
+        address(getSafeTransferFromSystem(SYSTEMS)).functionDelegateCall(
             abi.encodeWithSelector(
                 EXECUTE_SELECTOR, abi.encode(from, to, toEntity(tokenId), data)
             )
@@ -366,7 +366,7 @@ contract ECS721 is System, IECS721 {
 
     modifier onlyOwnerWriter() {
         require(
-            ownerComponent(COMPONENTS).writeAccess(_msgSender()),
+            getOwnerComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC721: only owner writer"
         );
         _;
@@ -374,7 +374,7 @@ contract ECS721 is System, IECS721 {
 
     modifier onlyApprovalWriter() {
         require(
-            approvalComponent(COMPONENTS).writeAccess(_msgSender()),
+            getApprovalComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC721: only approval writer"
         );
         _;
@@ -382,7 +382,7 @@ contract ECS721 is System, IECS721 {
 
     modifier onlyOperatorApprovalWriter() {
         require(
-            operatorApprovalComponent(COMPONENTS).writeAccess(_msgSender()),
+            getOperatorApprovalComponent(COMPONENTS).writeAccess(_msgSender()),
             "ERC721: only operator approval writer"
         );
         _;

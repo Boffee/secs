@@ -13,7 +13,7 @@ contract BalanceComponent is CounterBareComponent {
     {}
 }
 
-function balanceComponent(IUint256Component components)
+function getBalanceComponent(IUint256Component components)
     view
     returns (BalanceComponent)
 {

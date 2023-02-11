@@ -14,7 +14,7 @@ contract OperatorApprovalComponent is BoolBareComponent {
     {}
 }
 
-function operatorApprovalComponent(IUint256Component components)
+function getOperatorApprovalComponent(IUint256Component components)
     view
     returns (OperatorApprovalComponent)
 {

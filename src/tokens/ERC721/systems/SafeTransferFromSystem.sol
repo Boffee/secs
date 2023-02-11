@@ -35,7 +35,7 @@ contract SafeTransferFromSystem is System {
     }
 }
 
-function safeTransferFromSystem(IUint256Component systems)
+function getSafeTransferFromSystem(IUint256Component systems)
     view
     returns (SafeTransferFromSystem)
 {

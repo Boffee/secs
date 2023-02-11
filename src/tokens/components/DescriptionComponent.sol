@@ -12,7 +12,7 @@ contract DescriptionComponent is StringComponent {
     constructor(address world) StringComponent(world, DescriptionComponentID) {}
 }
 
-function descriptionComponent(IUint256Component components)
+function getDescriptionComponent(IUint256Component components)
     view
     returns (DescriptionComponent)
 {

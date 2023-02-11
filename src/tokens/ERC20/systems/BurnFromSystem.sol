@@ -33,7 +33,7 @@ contract BurnFromSystem is System {
     }
 }
 
-function burnFromSystem(IUint256Component systems)
+function getBurnFromSystem(IUint256Component systems)
     view
     returns (BurnFromSystem)
 {

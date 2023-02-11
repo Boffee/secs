@@ -35,7 +35,7 @@ contract TransferFromSystem is System {
     }
 }
 
-function transferFromSystem(IUint256Component systems)
+function getTransferFromSystem(IUint256Component systems)
     view
     returns (TransferFromSystem)
 {

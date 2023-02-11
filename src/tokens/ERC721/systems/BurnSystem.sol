@@ -27,6 +27,6 @@ contract BurnSystem is System {
     }
 }
 
-function burnSystem(IUint256Component systems) view returns (BurnSystem) {
+function getBurnSystem(IUint256Component systems) view returns (BurnSystem) {
     return BurnSystem(getAddressById(systems, BurnSystemID));
 }

@@ -22,7 +22,7 @@ library ECS20Lib {
         returns (string memory)
     {
         // return _name;
-        return nameComponent(components).getValue(thisEntity());
+        return getNameComponent(components).getValue(thisEntity());
     }
 
     /**
@@ -35,7 +35,7 @@ library ECS20Lib {
         returns (string memory)
     {
         // return _symbol;
-        return symbolComponent(components).getValue(thisEntity());
+        return getSymbolComponent(components).getValue(thisEntity());
     }
 
     /**
@@ -69,7 +69,7 @@ library ECS20Lib {
         returns (uint256)
     {
         // return _totalSupply;
-        return totalSupplyComponent(components).getValue(thisEntity());
+        return getTotalSupplyComponent(components).getValue(thisEntity());
     }
 
     /**
@@ -81,8 +81,9 @@ library ECS20Lib {
         uint256 account
     ) public view returns (uint256) {
         // return _balances[account];
-        return
-            balanceComponent(components).getValue(hashEntities(token, account));
+        return getBalanceComponent(components).getValue(
+            hashEntities(token, account)
+        );
     }
 
     /**
@@ -95,7 +96,7 @@ library ECS20Lib {
         uint256 spender
     ) public view returns (uint256) {
         // return _allowances[owner][spender];
-        return allowanceComponent(components).getValue(
+        return getAllowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
         );
     }
@@ -129,7 +130,7 @@ library ECS20Lib {
         // _beforeTokenTransfer(from, to, amount);
         _beforeTokenTransfer(token, from, to, amount);
 
-        BalanceComponent balanceComponent = balanceComponent(components);
+        BalanceComponent balanceComponent = getBalanceComponent(components);
         // uint256 fromBalance = _balances[from];
         // require(fromBalance >= amount, "ERC20: transfer amount exceeds balance");
         uint256 fromBalance =
@@ -173,12 +174,12 @@ library ECS20Lib {
         _beforeTokenTransfer(token, 0, account, amount);
 
         // _totalSupply += amount;
-        totalSupplyComponent(components).increment(token, amount);
+        getTotalSupplyComponent(components).increment(token, amount);
         // unchecked {
         //     // Overflow not possible: balance + amount is at most totalSupply + amount, which is checked above.
         //     _balances[account] += amount;
         // }
-        balanceComponent(components).increment(
+        getBalanceComponent(components).increment(
             hashEntities(token, account), amount
         );
 
@@ -213,7 +214,7 @@ library ECS20Lib {
 
         // uint256 accountBalance = _balances[account];
         // require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
-        BalanceComponent balanceComponent = balanceComponent(components);
+        BalanceComponent balanceComponent = getBalanceComponent(components);
         uint256 entityBalance =
             balanceComponent.getValue(hashEntities(token, account));
         require(entityBalance >= amount, "ERC20: burn amount exceeds balance");
@@ -226,7 +227,7 @@ library ECS20Lib {
         balanceComponent.set(
             hashEntities(token, account), entityBalance - amount
         );
-        totalSupplyComponent(components).decrement(token, amount);
+        getTotalSupplyComponent(components).decrement(token, amount);
 
         // emit Transfer(account, address(0), amount);
 
@@ -260,7 +261,7 @@ library ECS20Lib {
         require(spender != 0, "ERC20: approve to the zero address");
 
         // _allowances[owner][spender] = amount;
-        allowanceComponent(components).set(
+        getAllowanceComponent(components).set(
             hashEntities(token, owner, spender), amount
         );
 
@@ -284,7 +285,7 @@ library ECS20Lib {
         uint256 amount
     ) internal {
         // uint256 currentAllowance = allowance(owner, spender);
-        uint256 currentAllowance = allowanceComponent(components).getValue(
+        uint256 currentAllowance = getAllowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
         );
 
@@ -323,7 +324,7 @@ library ECS20Lib {
     ) public returns (bool) {
         // address owner = _msgSender();
         // _approve(owner, spender, allowance(owner, spender) + addedValue);
-        allowanceComponent(components).increment(
+        getAllowanceComponent(components).increment(
             hashEntities(token, owner, spender), addedValue
         );
         // return true;
@@ -357,7 +358,7 @@ library ECS20Lib {
         //     currentAllowance >= subtractedValue,
         //     "ERC20: decreased allowance below zero"
         // );
-        uint256 currentAllowance = allowanceComponent(components).getValue(
+        uint256 currentAllowance = getAllowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
         );
         require(
@@ -381,13 +382,15 @@ library ECS20Lib {
     function _setName(IUint256Component components, string memory name_)
         internal
     {
-        nameComponent(components).set(addressToEntity(address(this)), name_);
+        getNameComponent(components).set(addressToEntity(address(this)), name_);
     }
 
     function _setSymbol(IUint256Component components, string memory symbol_)
         internal
     {
-        symbolComponent(components).set(addressToEntity(address(this)), symbol_);
+        getSymbolComponent(components).set(
+            addressToEntity(address(this)), symbol_
+        );
     }
 
     /**

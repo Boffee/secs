@@ -20,22 +20,22 @@ contract DeployLibTest is Test {
         IUint256Component components = world.components();
         IComponent component;
 
-        component = approvalComponent(components);
+        component = getApprovalComponent(components);
         assertEq(component.world(), address(world));
 
-        component = balanceComponent(components);
+        component = getBalanceComponent(components);
         assertEq(component.world(), address(world));
 
-        component = nameComponent(components);
+        component = getNameComponent(components);
         assertEq(component.world(), address(world));
 
-        component = operatorApprovalComponent(components);
+        component = getOperatorApprovalComponent(components);
         assertEq(component.world(), address(world));
 
-        component = ownerComponent(components);
+        component = getOwnerComponent(components);
         assertEq(component.world(), address(world));
 
-        component = symbolComponent(components);
+        component = getSymbolComponent(components);
         assertEq(component.world(), address(world));
     }
 
@@ -43,19 +43,19 @@ contract DeployLibTest is Test {
         IUint256Component systems = world.systems();
         System system;
 
-        system = approveSystem(systems);
+        system = getApproveSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = burnSystem(systems);
+        system = getBurnSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = safeTransferFromSystem(systems);
+        system = getSafeTransferFromSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = setApprovalForAllSystem(systems);
+        system = getSetApprovalForAllSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = transferFromSystem(systems);
+        system = getTransferFromSystem(systems);
         assertEq(address(system.WORLD()), address(world));
     }
 }

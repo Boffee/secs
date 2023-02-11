@@ -11,7 +11,7 @@ contract OwnerComponent is Uint256BareComponent {
     constructor(address world) Uint256BareComponent(world, OwnerComponentID) {}
 }
 
-function ownerComponent(IUint256Component components)
+function getOwnerComponent(IUint256Component components)
     view
     returns (OwnerComponent)
 {

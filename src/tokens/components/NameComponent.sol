@@ -11,7 +11,7 @@ contract NameComponent is StringComponent {
     constructor(address world) StringComponent(world, NameComponentID) {}
 }
 
-function nameComponent(IUint256Component components)
+function getNameComponent(IUint256Component components)
     view
     returns (NameComponent)
 {

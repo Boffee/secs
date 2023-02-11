@@ -11,7 +11,7 @@ contract SymbolComponent is StringComponent {
     constructor(address world) StringComponent(world, SymbolComponentID) {}
 }
 
-function symbolComponent(IUint256Component components)
+function getSymbolComponent(IUint256Component components)
     view
     returns (SymbolComponent)
 {

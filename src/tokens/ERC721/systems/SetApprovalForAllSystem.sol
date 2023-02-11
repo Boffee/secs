@@ -30,7 +30,7 @@ contract SetApprovalForAllSystem is System {
     }
 }
 
-function setApprovalForAllSystem(IUint256Component systems)
+function getSetApprovalForAllSystem(IUint256Component systems)
     view
     returns (SetApprovalForAllSystem)
 {
