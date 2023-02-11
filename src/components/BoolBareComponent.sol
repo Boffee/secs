@@ -23,12 +23,16 @@ contract BoolBareComponent is Bytes32BareComponent {
         set(entity, abi.encode(true));
     }
 
-    function getValue(uint256 entity) public view virtual returns (bool) {
+    function getValue(uint256 entity)
+        public
+        view
+        virtual
+        returns (bool value)
+    {
         bytes memory rawValue = getRawValue(entity);
 
         if (rawValue.length > 0) {
-            bool value = abi.decode(rawValue, (bool));
-            return value;
+            value = abi.decode(rawValue, (bool));
         }
     }
 }
