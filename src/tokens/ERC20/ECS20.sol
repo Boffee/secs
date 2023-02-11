@@ -89,7 +89,17 @@ contract ECS20 is System, IECS20 {
         override
         returns (uint256)
     {
-        return COMPONENTS.balanceOf(thisEntity(), addressToEntity(account));
+        return balanceOf(addressToEntity(account));
+    }
+
+    function balanceOf(uint256 account)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
+        return COMPONENTS.balanceOf(thisEntity(), account);
     }
 
     /**
@@ -101,7 +111,16 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
-        return transferFrom(_msgSender(), to, amount);
+        return transfer(addressToEntity(to), amount);
+    }
+
+    function transfer(uint256 to, uint256 amount)
+        public
+        virtual
+        override
+        returns (bool)
+    {
+        return transferFrom(addressToEntity(_msgSender()), to, amount);
     }
 
     /**
@@ -114,9 +133,17 @@ contract ECS20 is System, IECS20 {
         override
         returns (uint256)
     {
-        return COMPONENTS.allowance(
-            thisEntity(), addressToEntity(owner), addressToEntity(spender)
-        );
+        return allowance(addressToEntity(owner), addressToEntity(spender));
+    }
+
+    function allowance(uint256 owner, uint256 spender)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
+        return COMPONENTS.allowance(thisEntity(), owner, spender);
     }
 
     /**
@@ -128,10 +155,18 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
+        return approve(addressToEntity(spender), amount);
+    }
+
+    function approve(uint256 spender, uint256 amount)
+        public
+        virtual
+        override
+        returns (bool)
+    {
         address(SYSTEMS.approveSystem()).functionDelegateCall(
             abi.encodeWithSelector(
-                EXECUTE_SELECTOR,
-                abi.encode(thisEntity(), addressToEntity(spender), amount)
+                EXECUTE_SELECTOR, abi.encode(thisEntity(), spender, amount)
             )
         );
         return true;
@@ -146,16 +181,33 @@ contract ECS20 is System, IECS20 {
         override
         returns (bool)
     {
+        return transferFrom(addressToEntity(from), addressToEntity(to), amount);
+    }
+
+    function transferFrom(uint256 from, uint256 to, uint256 amount)
+        public
+        virtual
+        override
+        returns (bool)
+    {
         address(SYSTEMS.transferFromSystem()).functionDelegateCall(
             abi.encodeWithSelector(
-                EXECUTE_SELECTOR,
-                abi.encode(thisEntity(), from, addressToEntity(to), amount)
+                EXECUTE_SELECTOR, abi.encode(thisEntity(), from, to, amount)
             )
         );
         return true;
     }
 
     function burn(address account, uint256 amount)
+        public
+        virtual
+        override
+        returns (bool)
+    {
+        return burn(addressToEntity(account), amount);
+    }
+
+    function burn(uint256 account, uint256 amount)
         public
         virtual
         override
@@ -186,7 +238,15 @@ contract ECS20 is System, IECS20 {
         virtual
         returns (bool)
     {
-        address owner = _msgSender();
+        return increaseAllowance(addressToEntity(spender), addedValue);
+    }
+
+    function increaseAllowance(uint256 spender, uint256 addedValue)
+        public
+        virtual
+        returns (bool)
+    {
+        uint256 owner = addressToEntity(_msgSender());
         approve(spender, allowance(owner, spender) + addedValue);
         return true;
     }
@@ -210,7 +270,15 @@ contract ECS20 is System, IECS20 {
         virtual
         returns (bool)
     {
-        address owner = _msgSender();
+        return decreaseAllowance(addressToEntity(spender), subtractedValue);
+    }
+
+    function decreaseAllowance(uint256 spender, uint256 subtractedValue)
+        public
+        virtual
+        returns (bool)
+    {
+        uint256 owner = addressToEntity(_msgSender());
         uint256 currentAllowance = allowance(owner, spender);
         require(
             currentAllowance >= subtractedValue,
@@ -265,15 +333,6 @@ contract ECS20 is System, IECS20 {
 
     function _mint(uint256 account, uint256 amount) internal virtual {
         COMPONENTS._mint(thisEntity(), account, amount);
-    }
-
-    /**
-     * @dev convert tokenId to entity
-     * @param tokenId tokenId
-     * @return entity
-     */
-    function toEntity(uint256 tokenId) public view returns (uint256) {
-        return tokenToEntity(address(this), tokenId);
     }
 
     /**
