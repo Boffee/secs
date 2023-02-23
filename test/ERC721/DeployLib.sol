@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import "forge-std/console2.sol";
 import "solecs/World.sol";
-import "./mocks/MockECS721.sol";
+import "./mocks/MockERC721ECS.sol";
 
 library DeployLib {
     function deploy() internal returns (IWorld world) {
@@ -11,7 +11,7 @@ library DeployLib {
         world.init();
         deployComponents(world);
         deploySystems(world);
-        configECS721(world, deployECS721(world));
+        configERC721ECS(world, deployERC721ECS(world));
     }
 
     function authorizeWriter(IWorld world, uint256 componentId, address writer)
@@ -57,11 +57,14 @@ library DeployLib {
         authorizeWriter(world, OwnerComponentID, transferFromSystem);
     }
 
-    function deployECS721(IWorld world) internal returns (ECS721 ecs721) {
-        return new MockECS721(world);
+    function deployERC721ECS(IWorld world)
+        internal
+        returns (ERC721ECS ecs721)
+    {
+        return new MockERC721ECS(world);
     }
 
-    function configECS721(IWorld world, ECS721 ecs721) internal {
+    function configERC721ECS(IWorld world, ERC721ECS ecs721) internal {
         authorizeWriter(world, ApprovalComponentID, address(ecs721));
         authorizeWriter(world, BalanceComponentID, address(ecs721));
         authorizeWriter(world, NameComponentID, address(ecs721));

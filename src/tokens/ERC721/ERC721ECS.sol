@@ -11,11 +11,11 @@ import "./systems/BurnSystem.sol";
 import "./systems/SafeTransferFromSystem.sol";
 import "./systems/SetApprovalForAllSystem.sol";
 import "./systems/TransferFromSystem.sol";
-import "./ECS721Lib.sol";
-import "./IECS721.sol";
+import "./ERC721ECSLib.sol";
+import "./IERC721ECS.sol";
 
-contract ECS721 is System, IECS721 {
-    using ECS721Lib for IUint256Component;
+contract ERC721ECS is System, IERC721ECS {
+    using ERC721ECSLib for IUint256Component;
     using DelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;

@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import "secs/tokens/ERC721/ECS721.sol";
+import "secs/tokens/ERC721/ERC721ECS.sol";
 
-uint256 constant MockECS721ID = uint256(keccak256("system.MockECS721"));
+uint256 constant MockERC721ECSID = uint256(keccak256("system.MockERC721ECS"));
 
-contract MockECS721 is ECS721 {
-    constructor(IWorld world) ECS721(world, MockECS721ID) {}
+contract MockERC721ECS is ERC721ECS {
+    constructor(IWorld world) ERC721ECS(world, MockERC721ECSID) {}
 
     function mint(address to, uint256 tokenId) public {
         _mint(to, tokenId);

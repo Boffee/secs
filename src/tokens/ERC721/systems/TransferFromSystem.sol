@@ -2,14 +2,14 @@
 pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
-import "secs/tokens/ERC721/ECS721Lib.sol";
+import "secs/tokens/ERC721/ERC721ECSLib.sol";
 import "secs/systems/System.sol";
 
 uint256 constant TransferFromSystemID =
     uint256(keccak256("system.ERC721.TransferFrom"));
 
 contract TransferFromSystem is System {
-    using ECS721Lib for IUint256Component;
+    using ERC721ECSLib for IUint256Component;
 
     constructor(IWorld world) System(world, TransferFromSystemID) {}
 

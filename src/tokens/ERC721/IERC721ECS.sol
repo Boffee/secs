@@ -2,9 +2,9 @@
 pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/interfaces/IERC721Metadata.sol";
-import "./IECS721Hooks.sol";
+import "./IERC721ECSHooks.sol";
 
-interface IECS721 is IERC721Metadata, IECS721Hooks {
+interface IERC721ECS is IERC721Metadata, IERC721ECSHooks {
     function burn(uint256 tokenId) external;
 
     function balanceOf(uint256 account) external view returns (uint256);

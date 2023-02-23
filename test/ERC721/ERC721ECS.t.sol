@@ -57,11 +57,11 @@ contract WrongReturnDataERC721Recipient is ERC721TokenReceiver {
 contract NonERC721Recipient {}
 
 contract ERC721Test is DSTestPlus {
-    MockECS721 token;
+    MockERC721ECS token;
 
     function setUp() public {
         IWorld world = DeployLib.deploy();
-        token = MockECS721(getAddressById(world.systems(), MockECS721ID));
+        token = MockERC721ECS(getAddressById(world.systems(), MockERC721ECSID));
         token.setName("Token");
         token.setSymbol("TKN");
     }
@@ -409,7 +409,7 @@ contract ERC721Test is DSTestPlus {
 
     function testMetadata(string memory name, string memory symbol) public {
         IWorld world = DeployLib.deploy();
-        token = MockECS721(getAddressById(world.systems(), MockECS721ID));
+        token = MockERC721ECS(getAddressById(world.systems(), MockERC721ECSID));
         token.setName(name);
         token.setSymbol(symbol);
     }

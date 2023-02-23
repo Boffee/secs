@@ -14,9 +14,9 @@ import "../components/NameComponent.sol";
 import "../components/OperatorApprovalComponent.sol";
 import "../components/OwnerComponent.sol";
 import "../components/SymbolComponent.sol";
-import "./IECS721Hooks.sol";
+import "./IERC721ECSHooks.sol";
 
-library ECS721Lib {
+library ERC721ECSLib {
     using Address for address;
 
     /**
@@ -448,7 +448,7 @@ library ECS721Lib {
     function _beforeTokenTransfer(uint256 from, uint256 to, uint256 entity)
         internal
     {
-        IECS721Hooks(getEntityTokenAddress(entity)).beforeTokenTransfer(
+        IERC721ECSHooks(getEntityTokenAddress(entity)).beforeTokenTransfer(
             from, to, entity
         );
     }
@@ -469,7 +469,7 @@ library ECS721Lib {
     function _afterTokenTransfer(uint256 from, uint256 to, uint256 entity)
         internal
     {
-        IECS721Hooks(getEntityTokenAddress(entity)).afterTokenTransfer(
+        IERC721ECSHooks(getEntityTokenAddress(entity)).afterTokenTransfer(
             from, to, entity
         );
     }
@@ -477,7 +477,7 @@ library ECS721Lib {
     function _afterApproval(uint256 owner, uint256 to, uint256 entity)
         internal
     {
-        IECS721Hooks(getEntityTokenAddress(entity)).afterApproval(
+        IERC721ECSHooks(getEntityTokenAddress(entity)).afterApproval(
             owner, to, entity
         );
     }
@@ -488,7 +488,7 @@ library ECS721Lib {
         uint256 operator,
         bool approved
     ) internal {
-        IECS721Hooks(getEntityTokenAddress(token)).afterApprovalForAll(
+        IERC721ECSHooks(getEntityTokenAddress(token)).afterApprovalForAll(
             owner, operator, approved
         );
     }
