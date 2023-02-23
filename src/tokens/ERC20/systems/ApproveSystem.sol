@@ -2,13 +2,13 @@
 pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
-import "secs/tokens/ERC20/ECS20Lib.sol";
+import "secs/tokens/ERC20/ERC20ECSLib.sol";
 import "secs/systems/System.sol";
 
 uint256 constant ApproveSystemID = uint256(keccak256("system.ERC20.Approve"));
 
 contract ApproveSystem is System {
-    using ECS20Lib for IUint256Component;
+    using ERC20ECSLib for IUint256Component;
 
     constructor(IWorld world) System(world, ApproveSystemID) {}
 

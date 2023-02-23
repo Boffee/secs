@@ -9,11 +9,11 @@ import "secs/utils/entity.sol";
 import "./systems/ApproveSystem.sol";
 import "./systems/BurnFromSystem.sol";
 import "./systems/TransferFromSystem.sol";
-import "./ECS20Lib.sol";
-import "./IECS20.sol";
+import "./ERC20ECSLib.sol";
+import "./IERC20ECS.sol";
 
-contract ECS20 is System, IECS20 {
-    using ECS20Lib for IUint256Component;
+contract ERC20ECS is System, IERC20ECS {
+    using ERC20ECSLib for IUint256Component;
     using DelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;

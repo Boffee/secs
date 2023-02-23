@@ -7,7 +7,7 @@ import "./DeployLib.sol";
 
 /// @author modified from solmate (https://github.com/transmissions11/solmate/blob/main/src/test/ERC20.t.sol)
 contract ERC20Test is DSTestPlus {
-    MockECS20 token;
+    MockERC20ECS token;
 
     bytes32 constant PERMIT_TYPEHASH = keccak256(
         "Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"
@@ -15,7 +15,7 @@ contract ERC20Test is DSTestPlus {
 
     function setUp() public {
         IWorld world = DeployLib.deploy();
-        token = MockECS20(getAddressById(world.systems(), MockECS20ID));
+        token = MockERC20ECS(getAddressById(world.systems(), MockERC20ECSID));
         token.setName("Token");
         token.setSymbol("TKN");
     }
@@ -123,7 +123,8 @@ contract ERC20Test is DSTestPlus {
         public
     {
         IWorld world = DeployLib.deploy();
-        MockECS20 tkn = MockECS20(getAddressById(world.systems(), MockECS20ID));
+        MockERC20ECS tkn =
+            MockERC20ECS(getAddressById(world.systems(), MockERC20ECSID));
         tkn.setName(name);
         tkn.setSymbol(symbol);
         assertEq(tkn.name(), name);
@@ -295,11 +296,11 @@ contract ERC20Test is DSTestPlus {
 /// @author solmate (https://github.com/transmissions11/solmate/blob/main/src/test/ERC20.t.sol)
 contract ERC20Invariants is DSTestPlus, DSInvariantTest {
     BalanceSum balanceSum;
-    MockECS20 token;
+    MockERC20ECS token;
 
     function setUp() public {
         IWorld world = DeployLib.deploy();
-        token = MockECS20(getAddressById(world.systems(), MockECS20ID));
+        token = MockERC20ECS(getAddressById(world.systems(), MockERC20ECSID));
         token.setName("Token");
         token.setSymbol("TKN");
 
@@ -315,10 +316,10 @@ contract ERC20Invariants is DSTestPlus, DSInvariantTest {
 
 /// @author solmate (https://github.com/transmissions11/solmate/blob/main/src/test/ERC20.t.sol)
 contract BalanceSum {
-    MockECS20 token;
+    MockERC20ECS token;
     uint256 public sum;
 
-    constructor(MockECS20 _token) {
+    constructor(MockERC20ECS _token) {
         token = _token;
     }
 

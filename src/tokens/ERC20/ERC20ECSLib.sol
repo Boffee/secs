@@ -10,9 +10,9 @@ import "../components/BalanceComponent.sol";
 import "../components/NameComponent.sol";
 import "../components/SymbolComponent.sol";
 import "../components/TotalSupplyComponent.sol";
-import "./IECS20Hooks.sol";
+import "./IERC20ECSHooks.sol";
 
-library ECS20Lib {
+library ERC20ECSLib {
     /**
      * @dev Returns the name of the token.
      */
@@ -413,7 +413,7 @@ library ECS20Lib {
         uint256 to,
         uint256 amount
     ) internal {
-        IECS20Hooks(entityToAddress(token)).beforeTokenTransfer(
+        IERC20ECSHooks(entityToAddress(token)).beforeTokenTransfer(
             from, to, amount
         );
     }
@@ -438,7 +438,9 @@ library ECS20Lib {
         uint256 to,
         uint256 amount
     ) internal {
-        IECS20Hooks(entityToAddress(token)).afterTokenTransfer(from, to, amount);
+        IERC20ECSHooks(entityToAddress(token)).afterTokenTransfer(
+            from, to, amount
+        );
     }
 
     function _afterApproval(
@@ -447,7 +449,7 @@ library ECS20Lib {
         uint256 spender,
         uint256 amount
     ) internal {
-        IECS20Hooks(entityToAddress(token)).afterApproval(
+        IERC20ECSHooks(entityToAddress(token)).afterApproval(
             owner, spender, amount
         );
     }

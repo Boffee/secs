@@ -3,9 +3,9 @@ pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/interfaces/IERC165.sol";
-import "./IECS20Hooks.sol";
+import "./IERC20ECSHooks.sol";
 
-interface IECS20 is IERC20, IERC165, IECS20Hooks {
+interface IERC20ECS is IERC20, IERC165, IERC20ECSHooks {
     function burn(address account, uint256 amount) external returns (bool);
 
     function burn(uint256 account, uint256 amount) external returns (bool);

@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import "forge-std/console2.sol";
 import "solecs/World.sol";
-import "./mocks/MockECS20.sol";
+import "./mocks/MockERC20ECS.sol";
 
 library DeployLib {
     function deploy() internal returns (IWorld world) {
@@ -11,7 +11,7 @@ library DeployLib {
         world.init();
         deployComponents(world);
         deploySystems(world);
-        configECS20(world, deployECS20(world));
+        configERC20ECS(world, deployERC20ECS(world));
     }
 
     function authorizeWriter(IWorld world, uint256 componentId, address writer)
@@ -42,11 +42,11 @@ library DeployLib {
         authorizeWriter(world, BalanceComponentID, transferFromSystem);
     }
 
-    function deployECS20(IWorld world) internal returns (ECS20 ecs20) {
-        return new MockECS20(world);
+    function deployERC20ECS(IWorld world) internal returns (ERC20ECS ecs20) {
+        return new MockERC20ECS(world);
     }
 
-    function configECS20(IWorld world, ECS20 ecs20) internal {
+    function configERC20ECS(IWorld world, ERC20ECS ecs20) internal {
         authorizeWriter(world, AllowanceComponentID, address(ecs20));
         authorizeWriter(world, BalanceComponentID, address(ecs20));
         authorizeWriter(world, NameComponentID, address(ecs20));
