@@ -262,15 +262,16 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
 
     function beforeTokenTransfer(uint256 from, uint256 to, uint256 entity)
         public
-        virtual
         onlyOwnerWriter
-    {}
+    {
+        _beforeTokenTransfer(from, to, entity);
+    }
 
     function afterTokenTransfer(uint256 from, uint256 to, uint256 entity)
         public
-        virtual
         onlyOwnerWriter
     {
+        _afterTokenTransfer(from, to, entity);
         emit Transfer(
             entityToAddress(from), entityToAddress(to), getEntityId(entity)
             );
@@ -278,9 +279,9 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
 
     function afterApproval(uint256 owner, uint256 approved, uint256 entity)
         public
-        virtual
         onlyApprovalWriter
     {
+        _afterApproval(owner, approved, entity);
         emit Approval(
             entityToAddress(owner),
             entityToAddress(approved),
@@ -290,29 +291,34 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
 
     function afterApprovalForAll(uint256 owner, uint256 operator, bool approved)
         public
-        virtual
         onlyOperatorApprovalWriter
     {
+        _afterApprovalForAll(owner, operator, approved);
         emit ApprovalForAll(
             entityToAddress(owner), entityToAddress(operator), approved
             );
     }
 
-    function _safeMint(address to, uint256 tokenId, bytes memory data)
+    function _beforeTokenTransfer(uint256 from, uint256 to, uint256 entity)
         internal
         virtual
-    {
-        _safeMint(addressToEntity(to), tokenId, data);
-    }
+    {}
 
-    function _safeMint(uint256 to, uint256 tokenId, bytes memory data)
+    function _afterTokenTransfer(uint256 from, uint256 to, uint256 entity)
         internal
         virtual
-    {
-        COMPONENTS._safeMint(
-            addressToEntity(_msgSender()), to, toEntity(tokenId), data
-        );
-    }
+    {}
+
+    function _afterApproval(uint256 owner, uint256 approved, uint256 entity)
+        internal
+        virtual
+    {}
+
+    function _afterApprovalForAll(
+        uint256 owner,
+        uint256 operator,
+        bool approved
+    ) internal virtual {}
 
     function setName(string memory name_) public virtual onlyOwner {
         COMPONENTS._setName(name_);

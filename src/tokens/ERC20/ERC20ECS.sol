@@ -276,15 +276,16 @@ contract ERC20ECS is IERC20ECS, Ownable, Context {
 
     function beforeTokenTransfer(uint256 from, uint256 to, uint256 amount)
         public
-        virtual
         onlyBalanceWriter
-    {}
+    {
+        _beforeTokenTransfer(from, to, amount);
+    }
 
     function afterTokenTransfer(uint256 from, uint256 to, uint256 amount)
         public
-        virtual
         onlyBalanceWriter
     {
+        _afterTokenTransfer(from, to, amount);
         emit Transfer(
             entityToAddress(from), entityToAddress(to), getEntityId(amount)
             );
@@ -292,15 +293,30 @@ contract ERC20ECS is IERC20ECS, Ownable, Context {
 
     function afterApproval(uint256 owner, uint256 spender, uint256 amount)
         public
-        virtual
         onlyAllowanceWriter
     {
+        _afterApproval(owner, spender, amount);
         emit Approval(
             entityToAddress(owner),
             entityToAddress(spender),
             getEntityId(amount)
             );
     }
+
+    function _beforeTokenTransfer(uint256 from, uint256 to, uint256 amount)
+        internal
+        virtual
+    {}
+
+    function _afterTokenTransfer(uint256 from, uint256 to, uint256 amount)
+        internal
+        virtual
+    {}
+
+    function _afterApproval(uint256 owner, uint256 spender, uint256 amount)
+        internal
+        virtual
+    {}
 
     function setName(string memory name_) public virtual onlyOwner {
         COMPONENTS._setName(name_);
