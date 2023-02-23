@@ -40,10 +40,10 @@ function updateEMA(uint256 curr, uint256 update, uint256 discreteWeight)
     returns (uint256)
 {
     uint256 continuousWeight = 1e18 - uint256(wadExp(-int256(discreteWeight)));
-    return unsafeUpdateMA(curr, update, continuousWeight);
+    return unsafeUpdateEMA(curr, update, continuousWeight);
 }
 
-function unsafeUpdateMA(uint256 curr, uint256 update, uint256 weight)
+function unsafeUpdateEMA(uint256 curr, uint256 update, uint256 weight)
     pure
     returns (uint256)
 {
