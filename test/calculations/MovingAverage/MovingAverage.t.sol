@@ -24,19 +24,21 @@ contract MovingAverageTest is Test {
         uint40 window,
         uint40 lastUpdateTimestamp
     ) public {
-        bytes memory data = MovingAverageLib.serialize(
-            MovingAverage(value, window, lastUpdateTimestamp)
+        bytes memory data = MovingAverageDataLib.serialize(
+            MovingAverageData(value, window, lastUpdateTimestamp)
         );
-        MovingAverage memory ma = MovingAverageLib.deserialize(data);
+        MovingAverageData memory ma = MovingAverageDataLib.deserialize(data);
         assertEq(ma.value, value);
         assertEq(ma.window, window);
         assertEq(ma.lastUpdateTimestamp, lastUpdateTimestamp);
     }
 
     function testUpdateEMA() public {
-        maComponent.set(1, MovingAverage(0, 1 days, uint40(block.timestamp)));
+        maComponent.set(
+            1, MovingAverageData(0, 1 days, uint40(block.timestamp))
+        );
 
-        MovingAverage memory ma = maComponent.getValue(1);
+        MovingAverageData memory ma = maComponent.getValue(1);
         assertEq(ma.value, 0);
         assertEq(ma.window, 1 days);
         assertEq(ma.lastUpdateTimestamp, uint40(block.timestamp));

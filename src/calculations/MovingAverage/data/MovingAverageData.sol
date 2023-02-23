@@ -3,13 +3,13 @@ pragma solidity ^0.8.17;
 
 import "solecs/LibTypes.sol";
 
-struct MovingAverage {
+struct MovingAverageData {
     uint128 value;
     uint40 window;
     uint40 lastUpdateTimestamp;
 }
 
-library MovingAverageLib {
+library MovingAverageDataLib {
     function schema()
         internal
         pure
@@ -30,7 +30,7 @@ library MovingAverageLib {
         return (keys, values);
     }
 
-    function serialize(MovingAverage memory ma)
+    function serialize(MovingAverageData memory ma)
         internal
         pure
         returns (bytes memory)
@@ -41,9 +41,9 @@ library MovingAverageLib {
     function deserialize(bytes memory data)
         internal
         pure
-        returns (MovingAverage memory ma)
+        returns (MovingAverageData memory ma)
     {
-        ma = MovingAverage(0, 0, 0);
+        ma = MovingAverageData(0, 0, 0);
 
         if (data.length > 0) {
             assembly {

@@ -14,7 +14,7 @@ library EMALogic {
         MovingAverageComponent movingAverageComponent =
             getMovingAverageComponent(components);
 
-        MovingAverage memory ma = movingAverageComponent.getValue(id);
+        MovingAverageData memory ma = movingAverageComponent.getValue(id);
 
         uint256 timeSinceLastUpdate =
             Math.max(block.timestamp - ma.lastUpdateTimestamp, 1);
@@ -26,7 +26,7 @@ library EMALogic {
 
         movingAverageComponent.set(
             id,
-            MovingAverage({
+            MovingAverageData({
                 value: uint128(newValue),
                 window: ma.window,
                 lastUpdateTimestamp: uint40(block.timestamp)
