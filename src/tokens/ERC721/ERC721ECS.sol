@@ -2,7 +2,9 @@
 pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 import "solecs/interfaces/IWorld.sol";
+import "solecs/Ownable.sol";
 import "solecs/utils.sol";
 import "secs/libraries/SystemDelegateCall.sol";
 import "secs/utils/entity.sol";
@@ -14,24 +16,16 @@ import "./systems/TransferFromSystem.sol";
 import "./ERC721ECSLib.sol";
 import "./IERC721ECS.sol";
 
-contract ERC721ECS is System, IERC721ECS {
+contract ERC721ECS is IERC721ECS, Ownable, Context {
     using ERC721ECSLib for IUint256Component;
     using SystemDelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;
+    IUint256Component public immutable COMPONENTS;
 
-    constructor(IWorld world, uint256 id) System(world, id) {
+    constructor(IWorld world) {
         SYSTEMS = world.systems();
-    }
-
-    function execute(bytes memory args) public virtual returns (bytes memory) {
-        (uint256 to, uint256 entity) = abi.decode(args, (uint256, uint256));
-
-        executeTyped(to, entity);
-    }
-
-    function executeTyped(uint256 to, uint256 entity) public virtual {
-        _mint(to, entity);
+        COMPONENTS = world.components();
     }
 
     /**
@@ -302,24 +296,6 @@ contract ERC721ECS is System, IERC721ECS {
         emit ApprovalForAll(
             entityToAddress(owner), entityToAddress(operator), approved
             );
-    }
-
-    function _mint(address to, uint256 tokenId) internal virtual {
-        _mint(addressToEntity(to), tokenId);
-    }
-
-    function _mint(uint256 to, uint256 tokenId) internal virtual {
-        COMPONENTS._mint(to, toEntity(tokenId));
-    }
-
-    function _safeMint(address to, uint256 tokenId) internal virtual {
-        _safeMint(addressToEntity(to), tokenId);
-    }
-
-    function _safeMint(uint256 to, uint256 tokenId) internal virtual {
-        COMPONENTS._safeMint(
-            addressToEntity(_msgSender()), to, toEntity(tokenId)
-        );
     }
 
     function _safeMint(address to, uint256 tokenId, bytes memory data)

@@ -11,7 +11,6 @@ library DeployLib {
         world.init();
         deployComponents(world);
         deploySystems(world);
-        configERC721ECS(world, deployERC721ECS(world));
     }
 
     function authorizeWriter(IWorld world, uint256 componentId, address writer)
@@ -39,6 +38,14 @@ library DeployLib {
         authorizeWriter(world, BalanceComponentID, burnSystem);
         authorizeWriter(world, OwnerComponentID, burnSystem);
 
+        address mintSystem = address(new MintSystem(world));
+        authorizeWriter(world, BalanceComponentID, mintSystem);
+        authorizeWriter(world, OwnerComponentID, mintSystem);
+
+        address safeMintSystem = address(new SafeMintSystem(world));
+        authorizeWriter(world, BalanceComponentID, safeMintSystem);
+        authorizeWriter(world, OwnerComponentID, safeMintSystem);
+
         address safeTransferFromSystem =
             address(new SafeTransferFromSystem(world));
         authorizeWriter(world, ApprovalComponentID, safeTransferFromSystem);
@@ -59,17 +66,14 @@ library DeployLib {
 
     function deployERC721ECS(IWorld world)
         internal
-        returns (ERC721ECS ecs721)
+        returns (MockERC721ECS erc721)
     {
-        return new MockERC721ECS(world);
-    }
-
-    function configERC721ECS(IWorld world, ERC721ECS ecs721) internal {
-        authorizeWriter(world, ApprovalComponentID, address(ecs721));
-        authorizeWriter(world, BalanceComponentID, address(ecs721));
-        authorizeWriter(world, NameComponentID, address(ecs721));
-        authorizeWriter(world, OperatorApprovalComponentID, address(ecs721));
-        authorizeWriter(world, OwnerComponentID, address(ecs721));
-        authorizeWriter(world, SymbolComponentID, address(ecs721));
+        erc721 = new MockERC721ECS(world);
+        authorizeWriter(world, ApprovalComponentID, address(erc721));
+        authorizeWriter(world, BalanceComponentID, address(erc721));
+        authorizeWriter(world, NameComponentID, address(erc721));
+        authorizeWriter(world, OperatorApprovalComponentID, address(erc721));
+        authorizeWriter(world, OwnerComponentID, address(erc721));
+        authorizeWriter(world, SymbolComponentID, address(erc721));
     }
 }

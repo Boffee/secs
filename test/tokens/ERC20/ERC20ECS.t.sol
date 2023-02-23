@@ -15,7 +15,7 @@ contract ERC20Test is DSTestPlus {
 
     function setUp() public {
         IWorld world = DeployLib.deploy();
-        token = MockERC20ECS(getAddressById(world.systems(), MockERC20ECSID));
+        token = DeployLib.deployERC20ECS(world);
         token.setName("Token");
         token.setSymbol("TKN");
     }
@@ -123,8 +123,7 @@ contract ERC20Test is DSTestPlus {
         public
     {
         IWorld world = DeployLib.deploy();
-        MockERC20ECS tkn =
-            MockERC20ECS(getAddressById(world.systems(), MockERC20ECSID));
+        MockERC20ECS tkn = DeployLib.deployERC20ECS(world);
         tkn.setName(name);
         tkn.setSymbol(symbol);
         assertEq(tkn.name(), name);
@@ -300,7 +299,7 @@ contract ERC20Invariants is DSTestPlus, DSInvariantTest {
 
     function setUp() public {
         IWorld world = DeployLib.deploy();
-        token = MockERC20ECS(getAddressById(world.systems(), MockERC20ECSID));
+        token = DeployLib.deployERC20ECS(world);
         token.setName("Token");
         token.setSymbol("TKN");
 

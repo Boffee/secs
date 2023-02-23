@@ -61,7 +61,7 @@ contract ERC721Test is DSTestPlus {
 
     function setUp() public {
         IWorld world = DeployLib.deploy();
-        token = MockERC721ECS(getAddressById(world.systems(), MockERC721ECSID));
+        token = DeployLib.deployERC721ECS(world);
         token.setName("Token");
         token.setSymbol("TKN");
     }
@@ -409,7 +409,7 @@ contract ERC721Test is DSTestPlus {
 
     function testMetadata(string memory name, string memory symbol) public {
         IWorld world = DeployLib.deploy();
-        token = MockERC721ECS(getAddressById(world.systems(), MockERC721ECSID));
+        token = DeployLib.deployERC721ECS(world);
         token.setName(name);
         token.setSymbol(symbol);
     }

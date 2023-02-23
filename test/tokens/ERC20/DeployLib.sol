@@ -11,7 +11,6 @@ library DeployLib {
         world.init();
         deployComponents(world);
         deploySystems(world);
-        configERC20ECS(world, deployERC20ECS(world));
     }
 
     function authorizeWriter(IWorld world, uint256 componentId, address writer)
@@ -33,6 +32,9 @@ library DeployLib {
         address approveSystem = address(new ApproveSystem(world));
         authorizeWriter(world, AllowanceComponentID, approveSystem);
 
+        address mintSystem = address(new MintSystem(world));
+        authorizeWriter(world, BalanceComponentID, mintSystem);
+
         address burnFromSystem = address(new BurnFromSystem(world));
         authorizeWriter(world, AllowanceComponentID, burnFromSystem);
         authorizeWriter(world, BalanceComponentID, burnFromSystem);
@@ -42,15 +44,15 @@ library DeployLib {
         authorizeWriter(world, BalanceComponentID, transferFromSystem);
     }
 
-    function deployERC20ECS(IWorld world) internal returns (ERC20ECS ecs20) {
-        return new MockERC20ECS(world);
-    }
-
-    function configERC20ECS(IWorld world, ERC20ECS ecs20) internal {
-        authorizeWriter(world, AllowanceComponentID, address(ecs20));
-        authorizeWriter(world, BalanceComponentID, address(ecs20));
-        authorizeWriter(world, NameComponentID, address(ecs20));
-        authorizeWriter(world, SymbolComponentID, address(ecs20));
-        authorizeWriter(world, TotalSupplyComponentID, address(ecs20));
+    function deployERC20ECS(IWorld world)
+        internal
+        returns (MockERC20ECS erc20)
+    {
+        erc20 = new MockERC20ECS(world);
+        authorizeWriter(world, AllowanceComponentID, address(erc20));
+        authorizeWriter(world, BalanceComponentID, address(erc20));
+        authorizeWriter(world, NameComponentID, address(erc20));
+        authorizeWriter(world, SymbolComponentID, address(erc20));
+        authorizeWriter(world, TotalSupplyComponentID, address(erc20));
     }
 }

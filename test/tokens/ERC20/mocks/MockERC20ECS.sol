@@ -2,13 +2,17 @@
 pragma solidity >=0.8.0;
 
 import "secs/tokens/ERC20/ERC20ECS.sol";
-
-uint256 constant MockERC20ECSID = uint256(keccak256("system.MockERC20ECS"));
+import "secs/tokens/ERC20/systems/MintSystem.sol";
+import "secs/tokens/ERC20/systems/BurnFromSystem.sol";
 
 contract MockERC20ECS is ERC20ECS {
-    constructor(IWorld world) ERC20ECS(world, MockERC20ECSID) {}
+    using SystemDelegateCall for address;
+
+    constructor(IWorld world) ERC20ECS(world) {}
 
     function mint(address to, uint256 value) public {
-        _mint(to, value);
+        address(getMintSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(thisEntity(), to, value)
+        );
     }
 }

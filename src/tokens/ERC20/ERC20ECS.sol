@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
+import "@openzeppelin/contracts/utils/Context.sol";
 import "solecs/interfaces/IWorld.sol";
+import "solecs/Ownable.sol";
 import "solecs/utils.sol";
 import "secs/libraries/SystemDelegateCall.sol";
 import "secs/systems/System.sol";
@@ -12,28 +14,16 @@ import "./systems/TransferFromSystem.sol";
 import "./ERC20ECSLib.sol";
 import "./IERC20ECS.sol";
 
-contract ERC20ECS is System, IERC20ECS {
+contract ERC20ECS is IERC20ECS, Ownable, Context {
     using ERC20ECSLib for IUint256Component;
     using SystemDelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;
+    IUint256Component public immutable COMPONENTS;
 
-    constructor(IWorld world, uint256 id) System(world, id) {
+    constructor(IWorld world) {
         SYSTEMS = world.systems();
-    }
-
-    function execute(bytes memory args) public virtual returns (bytes memory) {
-        (uint256 account, uint256 amount) = abi.decode(args, (uint256, uint256));
-
-        executeTyped(account, amount);
-    }
-
-    function executeTyped(uint256 account, uint256 amount)
-        public
-        virtual
-        returns (bytes memory)
-    {
-        _mint(account, amount);
+        COMPONENTS = world.components();
     }
 
     /**
@@ -318,14 +308,6 @@ contract ERC20ECS is System, IERC20ECS {
 
     function setSymbol(string memory symbol_) public virtual onlyOwner {
         COMPONENTS._setSymbol(symbol_);
-    }
-
-    function _mint(address account, uint256 amount) internal virtual {
-        _mint(addressToEntity(account), amount);
-    }
-
-    function _mint(uint256 account, uint256 amount) internal virtual {
-        COMPONENTS._mint(thisEntity(), account, amount);
     }
 
     /**
