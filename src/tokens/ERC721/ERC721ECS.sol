@@ -4,7 +4,7 @@ pragma solidity >=0.8.0;
 import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
 import "solecs/interfaces/IWorld.sol";
 import "solecs/utils.sol";
-import "secs/libraries/DelegateCall.sol";
+import "secs/libraries/SystemDelegateCall.sol";
 import "secs/utils/entity.sol";
 import "./systems/ApproveSystem.sol";
 import "./systems/BurnSystem.sol";
@@ -16,7 +16,7 @@ import "./IERC721ECS.sol";
 
 contract ERC721ECS is System, IERC721ECS {
     using ERC721ECSLib for IUint256Component;
-    using DelegateCall for address;
+    using SystemDelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;
 
@@ -123,10 +123,8 @@ contract ERC721ECS is System, IERC721ECS {
     }
 
     function approve(uint256 to, uint256 tokenId) public virtual override {
-        address(getApproveSystem(SYSTEMS)).functionDelegateCall(
-            abi.encodeWithSelector(
-                EXECUTE_SELECTOR, abi.encode(to, toEntity(tokenId))
-            )
+        address(getApproveSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(to, toEntity(tokenId))
         );
     }
 
@@ -159,10 +157,8 @@ contract ERC721ECS is System, IERC721ECS {
         virtual
         override
     {
-        address(getSetApprovalForAllSystem(SYSTEMS)).functionDelegateCall(
-            abi.encodeWithSelector(
-                EXECUTE_SELECTOR, abi.encode(thisEntity(), operator, approved)
-            )
+        address(getSetApprovalForAllSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(thisEntity(), operator, approved)
         );
     }
 
@@ -191,10 +187,8 @@ contract ERC721ECS is System, IERC721ECS {
     }
 
     function burn(uint256 tokenId) public virtual override {
-        address(getBurnSystem(SYSTEMS)).functionDelegateCall(
-            abi.encodeWithSelector(
-                EXECUTE_SELECTOR, abi.encode(toEntity(tokenId))
-            )
+        address(getBurnSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(toEntity(tokenId))
         );
     }
 
@@ -214,10 +208,8 @@ contract ERC721ECS is System, IERC721ECS {
         virtual
         override
     {
-        address(getTransferFromSystem(SYSTEMS)).functionDelegateCall(
-            abi.encodeWithSelector(
-                EXECUTE_SELECTOR, abi.encode(from, to, toEntity(tokenId))
-            )
+        address(getTransferFromSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(from, to, toEntity(tokenId))
         );
     }
 
@@ -260,10 +252,8 @@ contract ERC721ECS is System, IERC721ECS {
         uint256 tokenId,
         bytes memory data
     ) public virtual override {
-        address(getSafeTransferFromSystem(SYSTEMS)).functionDelegateCall(
-            abi.encodeWithSelector(
-                EXECUTE_SELECTOR, abi.encode(from, to, toEntity(tokenId), data)
-            )
+        address(getSafeTransferFromSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(from, to, toEntity(tokenId), data)
         );
     }
 

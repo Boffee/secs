@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
 import "solecs/utils.sol";
-import "secs/libraries/DelegateCall.sol";
+import "secs/libraries/SystemDelegateCall.sol";
 import "secs/systems/System.sol";
 import "secs/utils/entity.sol";
 import "./systems/ApproveSystem.sol";
@@ -14,7 +14,7 @@ import "./IERC20ECS.sol";
 
 contract ERC20ECS is System, IERC20ECS {
     using ERC20ECSLib for IUint256Component;
-    using DelegateCall for address;
+    using SystemDelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;
 
@@ -163,10 +163,8 @@ contract ERC20ECS is System, IERC20ECS {
         override
         returns (bool)
     {
-        address(getApproveSystem(SYSTEMS)).functionDelegateCall(
-            abi.encodeWithSelector(
-                EXECUTE_SELECTOR, abi.encode(thisEntity(), spender, amount)
-            )
+        address(getApproveSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(thisEntity(), spender, amount)
         );
         return true;
     }
@@ -189,10 +187,8 @@ contract ERC20ECS is System, IERC20ECS {
         override
         returns (bool)
     {
-        address(getTransferFromSystem(SYSTEMS)).functionDelegateCall(
-            abi.encodeWithSelector(
-                EXECUTE_SELECTOR, abi.encode(thisEntity(), from, to, amount)
-            )
+        address(getTransferFromSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(thisEntity(), from, to, amount)
         );
         return true;
     }
@@ -212,10 +208,8 @@ contract ERC20ECS is System, IERC20ECS {
         override
         returns (bool)
     {
-        address(getBurnFromSystem(SYSTEMS)).functionDelegateCall(
-            abi.encodeWithSelector(
-                EXECUTE_SELECTOR, abi.encode(thisEntity(), account, amount)
-            )
+        address(getBurnFromSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(thisEntity(), account, amount)
         );
         return true;
     }
