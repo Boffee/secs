@@ -2,14 +2,14 @@
 pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
-import "secs/tokens/ERC721/ERC721ECSLib.sol";
+import "secs/tokens/ERC721/ERC721ECSLogic.sol";
 import "secs/systems/PayableSystem.sol";
 
 uint256 constant SafeERC721MintPayableSystemID =
     uint256(keccak256("system.ERC721.SafeMintPayable"));
 
 contract SafeERC721MintPayableSystem is PayableSystem {
-    using ERC721ECSLib for IUint256Component;
+    using ERC721ECSLogic for IUint256Component;
 
     constructor(IWorld world)
         PayableSystem(world, SafeERC721MintPayableSystemID)

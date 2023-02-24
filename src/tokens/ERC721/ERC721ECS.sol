@@ -13,11 +13,11 @@ import "./systems/ERC721BurnSystem.sol";
 import "./systems/ERC721SafeTransferFromSystem.sol";
 import "./systems/ERC721SetApprovalForAllSystem.sol";
 import "./systems/ERC721TransferFromSystem.sol";
-import "./ERC721ECSLib.sol";
+import "./ERC721ECSLogic.sol";
 import "./IERC721ECS.sol";
 
 contract ERC721ECS is IERC721ECS, Ownable, Context {
-    using ERC721ECSLib for IUint256Component;
+    using ERC721ECSLogic for IUint256Component;
     using SystemDelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;

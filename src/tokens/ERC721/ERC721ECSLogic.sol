@@ -16,7 +16,7 @@ import "../components/OwnerComponent.sol";
 import "../components/SymbolComponent.sol";
 import "./IERC721ECSHooks.sol";
 
-library ERC721ECSLib {
+library ERC721ECSLogic {
     using Address for address;
 
     /**

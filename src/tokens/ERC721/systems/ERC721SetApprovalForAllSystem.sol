@@ -2,14 +2,14 @@
 pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
-import "secs/tokens/ERC721/ERC721ECSLib.sol";
+import "secs/tokens/ERC721/ERC721ECSLogic.sol";
 import "secs/systems/System.sol";
 
 uint256 constant ERC721SetApprovalForAllSystemID =
     uint256(keccak256("system.ERC721.SetApprovalForAll"));
 
 contract ERC721SetApprovalForAllSystem is System {
-    using ERC721ECSLib for IUint256Component;
+    using ERC721ECSLogic for IUint256Component;
 
     constructor(IWorld world) System(world, ERC721SetApprovalForAllSystemID) {}
 

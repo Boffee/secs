@@ -12,7 +12,7 @@ import "../components/SymbolComponent.sol";
 import "../components/TotalSupplyComponent.sol";
 import "./IERC20ECSHooks.sol";
 
-library ERC20ECSLib {
+library ERC20ECSLogic {
     /**
      * @dev Returns the name of the token.
      */

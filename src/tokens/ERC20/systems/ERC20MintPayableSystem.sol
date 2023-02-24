@@ -2,14 +2,14 @@
 pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
-import "secs/tokens/ERC20/ERC20ECSLib.sol";
+import "secs/tokens/ERC20/ERC20ECSLogic.sol";
 import "secs/systems/PayableSystem.sol";
 
 uint256 constant ERC20MintPayableSystemID =
     uint256(keccak256("system.ERC20.MintPayable"));
 
 contract ERC20MintPayableSystem is PayableSystem {
-    using ERC20ECSLib for IUint256Component;
+    using ERC20ECSLogic for IUint256Component;
 
     constructor(IWorld world) PayableSystem(world, ERC20MintPayableSystemID) {}
 

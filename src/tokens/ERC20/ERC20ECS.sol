@@ -11,11 +11,11 @@ import "secs/utils/entity.sol";
 import "./systems/ERC20ApproveSystem.sol";
 import "./systems/ERC20BurnFromSystem.sol";
 import "./systems/ERC20TransferFromSystem.sol";
-import "./ERC20ECSLib.sol";
+import "./ERC20ECSLogic.sol";
 import "./IERC20ECS.sol";
 
 contract ERC20ECS is IERC20ECS, Ownable, Context {
-    using ERC20ECSLib for IUint256Component;
+    using ERC20ECSLogic for IUint256Component;
     using SystemDelegateCall for address;
 
     IUint256Component public immutable SYSTEMS;
