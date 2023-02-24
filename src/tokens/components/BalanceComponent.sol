@@ -19,3 +19,10 @@ function getBalanceComponent(IUint256Component components)
 {
     return BalanceComponent(getAddressById(components, BalanceComponentID));
 }
+
+function deployBalanceComponent(IWorld world) {
+    if (world.components().getEntitiesWithValue(BalanceComponentID).length == 0)
+    {
+        new BalanceComponent(address(world));
+    }
+}

@@ -20,3 +20,12 @@ function getAllowanceComponent(IUint256Component components)
 {
     return AllowanceComponent(getAddressById(components, AllowanceComponentID));
 }
+
+function deployAllowanceComponent(IWorld world) {
+    if (
+        world.components().getEntitiesWithValue(AllowanceComponentID).length
+            == 0
+    ) {
+        new AllowanceComponent(address(world));
+    }
+}

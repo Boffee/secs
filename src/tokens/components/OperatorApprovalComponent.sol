@@ -22,3 +22,12 @@ function getOperatorApprovalComponent(IUint256Component components)
         getAddressById(components, OperatorApprovalComponentID)
     );
 }
+
+function deployOperatorApprovalComponent(IWorld world) {
+    if (
+        world.components().getEntitiesWithValue(OperatorApprovalComponentID)
+            .length == 0
+    ) {
+        new OperatorApprovalComponent(address(world));
+    }
+}

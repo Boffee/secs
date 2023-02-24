@@ -3,13 +3,17 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 import "forge-std/console2.sol";
-import "./DeployLib.sol";
+import "solecs/World.sol";
+import "secs/tokens/ERC721/DeployLib.sol";
 
 contract DeployLibTest is Test {
     IWorld world;
 
     function setUp() public virtual {
-        world = DeployLib.deploy();
+        world = new World();
+        world.init();
+        DeployLib.deployComponents(world);
+        DeployLib.deploySystems(world);
     }
 
     function testWorld() public {

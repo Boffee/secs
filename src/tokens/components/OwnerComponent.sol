@@ -17,3 +17,9 @@ function getOwnerComponent(IUint256Component components)
 {
     return OwnerComponent(getAddressById(components, OwnerComponentID));
 }
+
+function deployOwnerComponent(IWorld world) {
+    if (world.components().getEntitiesWithValue(OwnerComponentID).length == 0) {
+        new OwnerComponent(address(world));
+    }
+}

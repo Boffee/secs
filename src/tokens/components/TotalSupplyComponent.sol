@@ -21,3 +21,12 @@ function getTotalSupplyComponent(IUint256Component components)
     return
         TotalSupplyComponent(getAddressById(components, TotalSupplyComponentID));
 }
+
+function deployTotalSupplyComponent(IWorld world) {
+    if (
+        world.components().getEntitiesWithValue(TotalSupplyComponentID).length
+            == 0
+    ) {
+        new TotalSupplyComponent(address(world));
+    }
+}

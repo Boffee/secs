@@ -17,3 +17,9 @@ function getNameComponent(IUint256Component components)
 {
     return NameComponent(getAddressById(components, NameComponentID));
 }
+
+function deployNameComponent(IWorld world) {
+    if (world.components().getEntitiesWithValue(NameComponentID).length == 0) {
+        new NameComponent(address(world));
+    }
+}

@@ -17,3 +17,10 @@ function getSymbolComponent(IUint256Component components)
 {
     return SymbolComponent(getAddressById(components, SymbolComponentID));
 }
+
+function deploySymbolComponent(IWorld world) {
+    if (world.components().getEntitiesWithValue(SymbolComponentID).length == 0)
+    {
+        new SymbolComponent(address(world));
+    }
+}

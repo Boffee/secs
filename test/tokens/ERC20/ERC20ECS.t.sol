@@ -3,7 +3,9 @@ pragma solidity >=0.8.0;
 
 import {DSTestPlus} from "solmate/test/utils/DSTestPlus.sol";
 import {DSInvariantTest} from "solmate/test/utils/DSInvariantTest.sol";
-import "./DeployLib.sol";
+import "solecs/World.sol";
+import "secs/tokens/ERC20/DeployLib.sol";
+import "./mocks/MockERC20ECS.sol";
 
 /// @author modified from solmate (https://github.com/transmissions11/solmate/blob/main/src/test/ERC20.t.sol)
 contract ERC20Test is DSTestPlus {
@@ -14,8 +16,12 @@ contract ERC20Test is DSTestPlus {
     );
 
     function setUp() public {
-        IWorld world = DeployLib.deploy();
-        token = DeployLib.deployERC20ECS(world, "Token", "TKN");
+        World world = new World();
+        world.init();
+        DeployLib.deployComponents(world);
+        DeployLib.deploySystems(world);
+        token = new MockERC20ECS(world);
+        configERC20ECS(token, "Token", "TKN");
     }
 
     function invariantMetadata() public {
@@ -120,8 +126,12 @@ contract ERC20Test is DSTestPlus {
     function testMetadata(string calldata name, string calldata symbol)
         public
     {
-        IWorld world = DeployLib.deploy();
-        MockERC20ECS tkn = DeployLib.deployERC20ECS(world, name, symbol);
+        World world = new World();
+        world.init();
+        DeployLib.deployComponents(world);
+        DeployLib.deploySystems(world);
+        MockERC20ECS tkn = new MockERC20ECS(world);
+        configERC20ECS(tkn, name, symbol);
         assertEq(tkn.name(), name);
         assertEq(tkn.symbol(), symbol);
     }
@@ -294,8 +304,12 @@ contract ERC20Invariants is DSTestPlus, DSInvariantTest {
     MockERC20ECS token;
 
     function setUp() public {
-        IWorld world = DeployLib.deploy();
-        token = DeployLib.deployERC20ECS(world, "Token", "TKN");
+        IWorld world = new World();
+        world.init();
+        DeployLib.deployComponents(world);
+        DeployLib.deploySystems(world);
+        token = new MockERC20ECS(world);
+        configERC20ECS(token, "Token", "TKN");
 
         balanceSum = new BalanceSum(token);
 

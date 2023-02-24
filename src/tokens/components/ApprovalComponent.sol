@@ -19,3 +19,11 @@ function getApprovalComponent(IUint256Component components)
 {
     return ApprovalComponent(getAddressById(components, ApprovalComponentID));
 }
+
+function deployApprovalComponent(IWorld world) {
+    if (
+        world.components().getEntitiesWithValue(ApprovalComponentID).length == 0
+    ) {
+        new ApprovalComponent(address(world));
+    }
+}

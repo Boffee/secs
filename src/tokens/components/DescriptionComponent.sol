@@ -19,3 +19,12 @@ function getDescriptionComponent(IUint256Component components)
     return
         DescriptionComponent(getAddressById(components, DescriptionComponentID));
 }
+
+function deployDescriptionComponent(IWorld world) {
+    if (
+        world.components().getEntitiesWithValue(DescriptionComponentID).length
+            == 0
+    ) {
+        new DescriptionComponent(address(world));
+    }
+}

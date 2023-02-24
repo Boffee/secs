@@ -4,7 +4,9 @@ pragma solidity >=0.8.0;
 import {DSTestPlus} from "solmate/test/utils/DSTestPlus.sol";
 import {DSInvariantTest} from "solmate/test/utils/DSInvariantTest.sol";
 import {ERC721TokenReceiver} from "solmate/tokens/ERC721.sol";
-import "./DeployLib.sol";
+import "solecs/World.sol";
+import "secs/tokens/ERC721/DeployLib.sol";
+import "./mocks/MockERC721ECS.sol";
 
 /// modified from (https://github.com/transmissions11/solmate/blob/main/src/test/ERC721.t.sol)
 contract ERC721Recipient is ERC721TokenReceiver {
@@ -60,8 +62,12 @@ contract ERC721Test is DSTestPlus {
     MockERC721ECS token;
 
     function setUp() public {
-        IWorld world = DeployLib.deploy();
-        token = DeployLib.deployERC721ECS(world, "Token", "TKN");
+        IWorld world = new World();
+        world.init();
+        DeployLib.deployComponents(world);
+        DeployLib.deploySystems(world);
+        token = new MockERC721ECS(world);
+        configERC721ECS(token, "Token", "TKN");
     }
 
     function invariantMetadata() public {
@@ -406,8 +412,12 @@ contract ERC721Test is DSTestPlus {
     }
 
     function testMetadata(string memory name, string memory symbol) public {
-        IWorld world = DeployLib.deploy();
-        token = DeployLib.deployERC721ECS(world, "Token", "TKN");
+        IWorld world = new World();
+        world.init();
+        DeployLib.deployComponents(world);
+        DeployLib.deploySystems(world);
+        token = new MockERC721ECS(world);
+        configERC721ECS(token, "Token", "TKN");
         token.setName(name);
         token.setSymbol(symbol);
     }
