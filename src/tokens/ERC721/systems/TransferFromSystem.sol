@@ -35,3 +35,12 @@ function getTransferFromSystem(IUint256Component systems)
 {
     return TransferFromSystem(getAddressById(systems, TransferFromSystemID));
 }
+
+function deployTransferFromSystem(IWorld world) {
+    address system = address(new TransferFromSystem(world));
+
+    IUint256Component components = world.components();
+    getApprovalComponent(components).authorizeWriter(system);
+    getBalanceComponent(components).authorizeWriter(system);
+    getOwnerComponent(components).authorizeWriter(system);
+}

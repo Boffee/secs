@@ -45,3 +45,11 @@ function getMintPayableSystem(IUint256Component systems)
 {
     return MintPayableSystem(getAddressById(systems, MintPayableSystemID));
 }
+
+function deployMintPayableSystem(IWorld world) {
+    address system = address(new MintPayableSystem(world));
+
+    IUint256Component components = world.components();
+    getAllowanceComponent(components).authorizeWriter(system);
+    getBalanceComponent(components).authorizeWriter(system);
+}

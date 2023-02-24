@@ -43,3 +43,12 @@ function getSafeTransferFromSystem(IUint256Component systems)
         getAddressById(systems, SafeTransferFromSystemID)
     );
 }
+
+function deploySafeTransferFromSystem(IWorld world) {
+    address system = address(new SafeTransferFromSystem(world));
+
+    IUint256Component components = world.components();
+    getApprovalComponent(components).authorizeWriter(system);
+    getBalanceComponent(components).authorizeWriter(system);
+    getOwnerComponent(components).authorizeWriter(system);
+}

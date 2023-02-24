@@ -30,3 +30,12 @@ contract BurnSystem is System {
 function getBurnSystem(IUint256Component systems) view returns (BurnSystem) {
     return BurnSystem(getAddressById(systems, BurnSystemID));
 }
+
+function deployBurnSystem(IWorld world) {
+    address system = address(new BurnSystem(world));
+
+    IUint256Component components = world.components();
+    getApprovalComponent(components).authorizeWriter(system);
+    getBalanceComponent(components).authorizeWriter(system);
+    getOwnerComponent(components).authorizeWriter(system);
+}

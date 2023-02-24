@@ -29,30 +29,18 @@ library DeployLib {
     }
 
     function deploySystems(IWorld world) internal {
-        address approveSystem = address(new ApproveSystem(world));
-        authorizeWriter(world, AllowanceComponentID, approveSystem);
-
-        address mintSystem = address(new MintSystem(world));
-        authorizeWriter(world, BalanceComponentID, mintSystem);
-
-        address burnFromSystem = address(new BurnFromSystem(world));
-        authorizeWriter(world, AllowanceComponentID, burnFromSystem);
-        authorizeWriter(world, BalanceComponentID, burnFromSystem);
-
-        address transferFromSystem = address(new TransferFromSystem(world));
-        authorizeWriter(world, AllowanceComponentID, transferFromSystem);
-        authorizeWriter(world, BalanceComponentID, transferFromSystem);
+        deployApproveSystem(world);
+        deployMintSystem(world);
+        deployBurnFromSystem(world);
+        deployTransferFromSystem(world);
     }
 
-    function deployERC20ECS(IWorld world)
-        internal
-        returns (MockERC20ECS erc20)
-    {
+    function deployERC20ECS(
+        IWorld world,
+        string memory name,
+        string memory symbol
+    ) internal returns (MockERC20ECS erc20) {
         erc20 = new MockERC20ECS(world);
-        authorizeWriter(world, AllowanceComponentID, address(erc20));
-        authorizeWriter(world, BalanceComponentID, address(erc20));
-        authorizeWriter(world, NameComponentID, address(erc20));
-        authorizeWriter(world, SymbolComponentID, address(erc20));
-        authorizeWriter(world, TotalSupplyComponentID, address(erc20));
+        configERC20ECS(erc20, name, symbol);
     }
 }

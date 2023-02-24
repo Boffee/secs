@@ -360,3 +360,20 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
         _;
     }
 }
+
+function configERC721ECS(
+    ERC721ECS erc721,
+    string memory name,
+    string memory symbol
+) {
+    IUint256Component components = erc721.COMPONENTS();
+    getApprovalComponent(components).authorizeWriter(address(erc721));
+    getBalanceComponent(components).authorizeWriter(address(erc721));
+    getNameComponent(components).authorizeWriter(address(erc721));
+    getOperatorApprovalComponent(components).authorizeWriter(address(erc721));
+    getOwnerComponent(components).authorizeWriter(address(erc721));
+    getSymbolComponent(components).authorizeWriter(address(erc721));
+
+    erc721.setName(name);
+    erc721.setSymbol(symbol);
+}

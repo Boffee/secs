@@ -38,3 +38,10 @@ function getSetApprovalForAllSystem(IUint256Component systems)
         getAddressById(systems, SetApprovalForAllSystemID)
     );
 }
+
+function deploySetApprovalForAllSystem(IWorld world) {
+    address system = address(new SetApprovalForAllSystem(world));
+
+    IUint256Component components = world.components();
+    getOperatorApprovalComponent(components).authorizeWriter(system);
+}

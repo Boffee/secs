@@ -39,3 +39,11 @@ function getBurnFromSystem(IUint256Component systems)
 {
     return BurnFromSystem(getAddressById(systems, BurnFromSystemID));
 }
+
+function deployBurnFromSystem(IWorld world) {
+    address system = address(new BurnFromSystem(world));
+
+    IUint256Component components = world.components();
+    getAllowanceComponent(components).authorizeWriter(system);
+    getBalanceComponent(components).authorizeWriter(system);
+}

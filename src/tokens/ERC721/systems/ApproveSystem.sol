@@ -38,3 +38,10 @@ function getApproveSystem(IUint256Component systems)
 {
     return ApproveSystem(getAddressById(systems, ApproveSystemID));
 }
+
+function deployApproveSystem(IWorld world) {
+    address system = address(new ApproveSystem(world));
+
+    IUint256Component components = world.components();
+    getApprovalComponent(components).authorizeWriter(system);
+}

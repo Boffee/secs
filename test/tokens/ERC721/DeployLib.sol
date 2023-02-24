@@ -30,50 +30,21 @@ library DeployLib {
     }
 
     function deploySystems(IWorld world) internal {
-        address approveSystem = address(new ApproveSystem(world));
-        authorizeWriter(world, ApprovalComponentID, approveSystem);
-
-        address burnSystem = address(new BurnSystem(world));
-        authorizeWriter(world, ApprovalComponentID, burnSystem);
-        authorizeWriter(world, BalanceComponentID, burnSystem);
-        authorizeWriter(world, OwnerComponentID, burnSystem);
-
-        address mintSystem = address(new MintSystem(world));
-        authorizeWriter(world, BalanceComponentID, mintSystem);
-        authorizeWriter(world, OwnerComponentID, mintSystem);
-
-        address safeMintSystem = address(new SafeMintSystem(world));
-        authorizeWriter(world, BalanceComponentID, safeMintSystem);
-        authorizeWriter(world, OwnerComponentID, safeMintSystem);
-
-        address safeTransferFromSystem =
-            address(new SafeTransferFromSystem(world));
-        authorizeWriter(world, ApprovalComponentID, safeTransferFromSystem);
-        authorizeWriter(world, BalanceComponentID, safeTransferFromSystem);
-        authorizeWriter(world, OwnerComponentID, safeTransferFromSystem);
-
-        address setApprovalForAllSystem =
-            address(new SetApprovalForAllSystem(world));
-        authorizeWriter(
-            world, OperatorApprovalComponentID, setApprovalForAllSystem
-        );
-
-        address transferFromSystem = address(new TransferFromSystem(world));
-        authorizeWriter(world, ApprovalComponentID, transferFromSystem);
-        authorizeWriter(world, BalanceComponentID, transferFromSystem);
-        authorizeWriter(world, OwnerComponentID, transferFromSystem);
+        deployApproveSystem(world);
+        deployBurnSystem(world);
+        deployMintSystem(world);
+        deploySafeMintSystem(world);
+        deploySafeTransferFromSystem(world);
+        deploySetApprovalForAllSystem(world);
+        deployTransferFromSystem(world);
     }
 
-    function deployERC721ECS(IWorld world)
-        internal
-        returns (MockERC721ECS erc721)
-    {
+    function deployERC721ECS(
+        IWorld world,
+        string memory name,
+        string memory symbol
+    ) internal returns (MockERC721ECS erc721) {
         erc721 = new MockERC721ECS(world);
-        authorizeWriter(world, ApprovalComponentID, address(erc721));
-        authorizeWriter(world, BalanceComponentID, address(erc721));
-        authorizeWriter(world, NameComponentID, address(erc721));
-        authorizeWriter(world, OperatorApprovalComponentID, address(erc721));
-        authorizeWriter(world, OwnerComponentID, address(erc721));
-        authorizeWriter(world, SymbolComponentID, address(erc721));
+        configERC721ECS(erc721, name, symbol);
     }
 }

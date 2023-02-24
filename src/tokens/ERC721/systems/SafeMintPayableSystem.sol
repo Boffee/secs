@@ -49,3 +49,11 @@ function getSafeMintPayableSystem(IUint256Component systems)
     return
         SafeMintPayableSystem(getAddressById(systems, SafeMintPayableSystemID));
 }
+
+function deploySafeMintPayableSystem(IWorld world) {
+    address system = address(new SafeMintPayableSystem(world));
+
+    IUint256Component components = world.components();
+    getBalanceComponent(components).authorizeWriter(system);
+    getOwnerComponent(components).authorizeWriter(system);
+}

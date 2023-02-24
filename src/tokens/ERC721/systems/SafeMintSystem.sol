@@ -41,3 +41,11 @@ function getSafeMintSystem(IUint256Component systems)
 {
     return SafeMintSystem(getAddressById(systems, SafeMintSystemID));
 }
+
+function deploySafeMintSystem(IWorld world) {
+    address system = address(new SafeMintSystem(world));
+
+    IUint256Component components = world.components();
+    getBalanceComponent(components).authorizeWriter(system);
+    getOwnerComponent(components).authorizeWriter(system);
+}

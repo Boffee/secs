@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/interfaces/IERC721Metadata.sol";
+import "solecs/interfaces/IUint256Component.sol";
 import "./IERC721ECSHooks.sol";
 
 interface IERC721ECS is IERC721Metadata, IERC721ECSHooks {

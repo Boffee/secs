@@ -35,3 +35,11 @@ contract MintSystem is System {
 function getMintSystem(IUint256Component systems) view returns (MintSystem) {
     return MintSystem(getAddressById(systems, MintSystemID));
 }
+
+function deployMintSystem(IWorld world) {
+    address system = address(new MintSystem(world));
+
+    IUint256Component components = world.components();
+    getAllowanceComponent(components).authorizeWriter(system);
+    getBalanceComponent(components).authorizeWriter(system);
+}

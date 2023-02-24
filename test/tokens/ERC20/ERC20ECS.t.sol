@@ -15,9 +15,7 @@ contract ERC20Test is DSTestPlus {
 
     function setUp() public {
         IWorld world = DeployLib.deploy();
-        token = DeployLib.deployERC20ECS(world);
-        token.setName("Token");
-        token.setSymbol("TKN");
+        token = DeployLib.deployERC20ECS(world, "Token", "TKN");
     }
 
     function invariantMetadata() public {
@@ -123,9 +121,7 @@ contract ERC20Test is DSTestPlus {
         public
     {
         IWorld world = DeployLib.deploy();
-        MockERC20ECS tkn = DeployLib.deployERC20ECS(world);
-        tkn.setName(name);
-        tkn.setSymbol(symbol);
+        MockERC20ECS tkn = DeployLib.deployERC20ECS(world, name, symbol);
         assertEq(tkn.name(), name);
         assertEq(tkn.symbol(), symbol);
     }
@@ -299,9 +295,7 @@ contract ERC20Invariants is DSTestPlus, DSInvariantTest {
 
     function setUp() public {
         IWorld world = DeployLib.deploy();
-        token = DeployLib.deployERC20ECS(world);
-        token.setName("Token");
-        token.setSymbol("TKN");
+        token = DeployLib.deployERC20ECS(world, "Token", "TKN");
 
         balanceSum = new BalanceSum(token);
 
