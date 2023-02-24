@@ -5,12 +5,12 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC721/ERC721ECSLib.sol";
 import "secs/systems/System.sol";
 
-uint256 constant BurnSystemID = uint256(keccak256("system.ERC721.Burn"));
+uint256 constant ERC721BurnSystemID = uint256(keccak256("system.ERC721.Burn"));
 
-contract BurnSystem is System {
+contract ERC721BurnSystem is System {
     using ERC721ECSLib for IUint256Component;
 
-    constructor(IWorld world) System(world, BurnSystemID) {}
+    constructor(IWorld world) System(world, ERC721BurnSystemID) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         uint256 entity = abi.decode(args, (uint256));
@@ -27,12 +27,15 @@ contract BurnSystem is System {
     }
 }
 
-function getBurnSystem(IUint256Component systems) view returns (BurnSystem) {
-    return BurnSystem(getAddressById(systems, BurnSystemID));
+function getERC721BurnSystem(IUint256Component systems)
+    view
+    returns (ERC721BurnSystem)
+{
+    return ERC721BurnSystem(getAddressById(systems, ERC721BurnSystemID));
 }
 
-function deployBurnSystem(IWorld world) {
-    address system = address(new BurnSystem(world));
+function deployERC721BurnSystem(IWorld world) {
+    address system = address(new ERC721BurnSystem(world));
 
     IUint256Component components = world.components();
     getApprovalComponent(components).authorizeWriter(system);

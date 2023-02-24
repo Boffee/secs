@@ -5,13 +5,13 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC721/ERC721ECSLib.sol";
 import "secs/systems/System.sol";
 
-uint256 constant SafeTransferFromSystemID =
+uint256 constant ERC721SafeTransferFromSystemID =
     uint256(keccak256("system.ERC721.SafeTransferFrom"));
 
-contract SafeTransferFromSystem is System {
+contract ERC721SafeTransferFromSystem is System {
     using ERC721ECSLib for IUint256Component;
 
-    constructor(IWorld world) System(world, SafeTransferFromSystemID) {}
+    constructor(IWorld world) System(world, ERC721SafeTransferFromSystemID) {}
 
     function execute(bytes memory args) public returns (bytes memory) {
         (uint256 from, uint256 to, uint256 entity, bytes memory data) =
@@ -35,17 +35,17 @@ contract SafeTransferFromSystem is System {
     }
 }
 
-function getSafeTransferFromSystem(IUint256Component systems)
+function getERC721SafeTransferFromSystem(IUint256Component systems)
     view
-    returns (SafeTransferFromSystem)
+    returns (ERC721SafeTransferFromSystem)
 {
-    return SafeTransferFromSystem(
-        getAddressById(systems, SafeTransferFromSystemID)
+    return ERC721SafeTransferFromSystem(
+        getAddressById(systems, ERC721SafeTransferFromSystemID)
     );
 }
 
-function deploySafeTransferFromSystem(IWorld world) {
-    address system = address(new SafeTransferFromSystem(world));
+function deployERC721SafeTransferFromSystem(IWorld world) {
+    address system = address(new ERC721SafeTransferFromSystem(world));
 
     IUint256Component components = world.components();
     getApprovalComponent(components).authorizeWriter(system);

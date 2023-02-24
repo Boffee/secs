@@ -5,12 +5,13 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC20/ERC20ECSLib.sol";
 import "secs/systems/System.sol";
 
-uint256 constant BurnFromSystemID = uint256(keccak256("system.ERC20.BurnFrom"));
+uint256 constant ERC20BurnFromSystemID =
+    uint256(keccak256("system.ERC20.BurnFrom"));
 
-contract BurnFromSystem is System {
+contract ERC20BurnFromSystem is System {
     using ERC20ECSLib for IUint256Component;
 
-    constructor(IWorld world) System(world, BurnFromSystemID) {}
+    constructor(IWorld world) System(world, ERC20BurnFromSystemID) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 token, uint256 account, uint256 amount) =
@@ -33,15 +34,15 @@ contract BurnFromSystem is System {
     }
 }
 
-function getBurnFromSystem(IUint256Component systems)
+function getERC20BurnFromSystem(IUint256Component systems)
     view
-    returns (BurnFromSystem)
+    returns (ERC20BurnFromSystem)
 {
-    return BurnFromSystem(getAddressById(systems, BurnFromSystemID));
+    return ERC20BurnFromSystem(getAddressById(systems, ERC20BurnFromSystemID));
 }
 
-function deployBurnFromSystem(IWorld world) {
-    address system = address(new BurnFromSystem(world));
+function deployERC20BurnFromSystem(IWorld world) {
+    address system = address(new ERC20BurnFromSystem(world));
 
     IUint256Component components = world.components();
     getAllowanceComponent(components).authorizeWriter(system);

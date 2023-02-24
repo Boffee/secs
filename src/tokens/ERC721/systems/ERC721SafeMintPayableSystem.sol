@@ -5,13 +5,15 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC721/ERC721ECSLib.sol";
 import "secs/systems/PayableSystem.sol";
 
-uint256 constant SafeMintPayableSystemID =
+uint256 constant SafeERC721MintPayableSystemID =
     uint256(keccak256("system.ERC721.SafeMintPayable"));
 
-contract SafeMintPayableSystem is PayableSystem {
+contract SafeERC721MintPayableSystem is PayableSystem {
     using ERC721ECSLib for IUint256Component;
 
-    constructor(IWorld world) PayableSystem(world, SafeMintPayableSystemID) {}
+    constructor(IWorld world)
+        PayableSystem(world, SafeERC721MintPayableSystemID)
+    {}
 
     function execute(bytes memory args)
         public
@@ -42,16 +44,17 @@ contract SafeMintPayableSystem is PayableSystem {
     }
 }
 
-function getSafeMintPayableSystem(IUint256Component systems)
+function getSafeERC721MintPayableSystem(IUint256Component systems)
     view
-    returns (SafeMintPayableSystem)
+    returns (SafeERC721MintPayableSystem)
 {
-    return
-        SafeMintPayableSystem(getAddressById(systems, SafeMintPayableSystemID));
+    return SafeERC721MintPayableSystem(
+        getAddressById(systems, SafeERC721MintPayableSystemID)
+    );
 }
 
-function deploySafeMintPayableSystem(IWorld world) {
-    address system = address(new SafeMintPayableSystem(world));
+function deploySafeERC721MintPayableSystem(IWorld world) {
+    address system = address(new SafeERC721MintPayableSystem(world));
 
     IUint256Component components = world.components();
     getBalanceComponent(components).authorizeWriter(system);

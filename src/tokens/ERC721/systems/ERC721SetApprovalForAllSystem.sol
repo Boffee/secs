@@ -5,13 +5,13 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC721/ERC721ECSLib.sol";
 import "secs/systems/System.sol";
 
-uint256 constant SetApprovalForAllSystemID =
+uint256 constant ERC721SetApprovalForAllSystemID =
     uint256(keccak256("system.ERC721.SetApprovalForAll"));
 
-contract SetApprovalForAllSystem is System {
+contract ERC721SetApprovalForAllSystem is System {
     using ERC721ECSLib for IUint256Component;
 
-    constructor(IWorld world) System(world, SetApprovalForAllSystemID) {}
+    constructor(IWorld world) System(world, ERC721SetApprovalForAllSystemID) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 token, uint256 operator, bool approved) =
@@ -30,17 +30,17 @@ contract SetApprovalForAllSystem is System {
     }
 }
 
-function getSetApprovalForAllSystem(IUint256Component systems)
+function getERC721SetApprovalForAllSystem(IUint256Component systems)
     view
-    returns (SetApprovalForAllSystem)
+    returns (ERC721SetApprovalForAllSystem)
 {
-    return SetApprovalForAllSystem(
-        getAddressById(systems, SetApprovalForAllSystemID)
+    return ERC721SetApprovalForAllSystem(
+        getAddressById(systems, ERC721SetApprovalForAllSystemID)
     );
 }
 
-function deploySetApprovalForAllSystem(IWorld world) {
-    address system = address(new SetApprovalForAllSystem(world));
+function deployERC721SetApprovalForAllSystem(IWorld world) {
+    address system = address(new ERC721SetApprovalForAllSystem(world));
 
     IUint256Component components = world.components();
     getOperatorApprovalComponent(components).authorizeWriter(system);

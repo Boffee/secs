@@ -5,12 +5,13 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC20/ERC20ECSLib.sol";
 import "secs/systems/System.sol";
 
-uint256 constant ApproveSystemID = uint256(keccak256("system.ERC20.Approve"));
+uint256 constant ERC20ApproveSystemID =
+    uint256(keccak256("system.ERC20.Approve"));
 
-contract ApproveSystem is System {
+contract ERC20ApproveSystem is System {
     using ERC20ECSLib for IUint256Component;
 
-    constructor(IWorld world) System(world, ApproveSystemID) {}
+    constructor(IWorld world) System(world, ERC20ApproveSystemID) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 token, uint256 spender, uint256 amount) =
@@ -31,15 +32,15 @@ contract ApproveSystem is System {
     }
 }
 
-function getApproveSystem(IUint256Component systems)
+function getERC20ApproveSystem(IUint256Component systems)
     view
-    returns (ApproveSystem)
+    returns (ERC20ApproveSystem)
 {
-    return ApproveSystem(getAddressById(systems, ApproveSystemID));
+    return ERC20ApproveSystem(getAddressById(systems, ERC20ApproveSystemID));
 }
 
-function deployApproveSystem(IWorld world) {
-    address system = address(new ApproveSystem(world));
+function deployERC20ApproveSystem(IWorld world) {
+    address system = address(new ERC20ApproveSystem(world));
 
     IUint256Component components = world.components();
     getAllowanceComponent(components).authorizeWriter(system);

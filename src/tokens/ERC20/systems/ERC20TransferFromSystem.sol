@@ -5,13 +5,13 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC20/ERC20ECSLib.sol";
 import "secs/systems/System.sol";
 
-uint256 constant TransferFromSystemID =
+uint256 constant ERC20TransferFromSystemID =
     uint256(keccak256("system.ERC20.TransferFrom"));
 
-contract TransferFromSystem is System {
+contract ERC20TransferFromSystem is System {
     using ERC20ECSLib for IUint256Component;
 
-    constructor(IWorld world) System(world, TransferFromSystemID) {}
+    constructor(IWorld world) System(world, ERC20TransferFromSystemID) {}
 
     function execute(bytes memory args) public returns (bytes memory) {
         (uint256 token, uint256 from, uint256 to, uint256 amount) =
@@ -35,15 +35,17 @@ contract TransferFromSystem is System {
     }
 }
 
-function getTransferFromSystem(IUint256Component systems)
+function getERC20TransferFromSystem(IUint256Component systems)
     view
-    returns (TransferFromSystem)
+    returns (ERC20TransferFromSystem)
 {
-    return TransferFromSystem(getAddressById(systems, TransferFromSystemID));
+    return ERC20TransferFromSystem(
+        getAddressById(systems, ERC20TransferFromSystemID)
+    );
 }
 
-function deployTransferFromSystem(IWorld world) {
-    address system = address(new TransferFromSystem(world));
+function deployERC20TransferFromSystem(IWorld world) {
+    address system = address(new ERC20TransferFromSystem(world));
 
     IUint256Component components = world.components();
     getAllowanceComponent(components).authorizeWriter(system);

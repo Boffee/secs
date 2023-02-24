@@ -3,22 +3,16 @@ pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC20/ERC20ECSLib.sol";
-import "secs/systems/PayableSystem.sol";
+import "secs/systems/System.sol";
 
-uint256 constant MintPayableSystemID =
-    uint256(keccak256("system.ERC20.MintPayable"));
+uint256 constant ERC20MintSystemID = uint256(keccak256("system.ERC20.Mint"));
 
-contract MintPayableSystem is PayableSystem {
+contract ERC20MintSystem is System {
     using ERC20ECSLib for IUint256Component;
 
-    constructor(IWorld world) PayableSystem(world, MintPayableSystemID) {}
+    constructor(IWorld world) System(world, ERC20MintSystemID) {}
 
-    function execute(bytes memory args)
-        public
-        payable
-        virtual
-        returns (bytes memory)
-    {
+    function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 token, uint256 account, uint256 amount) =
             abi.decode(args, (uint256, uint256, uint256));
 
@@ -27,7 +21,6 @@ contract MintPayableSystem is PayableSystem {
 
     function executeTyped(uint256 token, uint256 account, uint256 amount)
         public
-        payable
         virtual
     {
         if (addressToEntity(address(this)) != token) {
@@ -39,15 +32,15 @@ contract MintPayableSystem is PayableSystem {
     }
 }
 
-function getMintPayableSystem(IUint256Component systems)
+function getERC20MintSystem(IUint256Component systems)
     view
-    returns (MintPayableSystem)
+    returns (ERC20MintSystem)
 {
-    return MintPayableSystem(getAddressById(systems, MintPayableSystemID));
+    return ERC20MintSystem(getAddressById(systems, ERC20MintSystemID));
 }
 
-function deployMintPayableSystem(IWorld world) {
-    address system = address(new MintPayableSystem(world));
+function deployERC20MintSystem(IWorld world) {
+    address system = address(new ERC20MintSystem(world));
 
     IUint256Component components = world.components();
     getAllowanceComponent(components).authorizeWriter(system);

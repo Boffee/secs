@@ -3,28 +3,22 @@ pragma solidity >=0.8.0;
 
 import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC721/ERC721ECSLib.sol";
-import "secs/systems/PayableSystem.sol";
+import "secs/systems/System.sol";
 
-uint256 constant MintPayableSystemID =
-    uint256(keccak256("system.ERC721.MintPayable"));
+uint256 constant ERC721MintSystemID = uint256(keccak256("system.ERC721.Mint"));
 
-contract MintPayableSystem is PayableSystem {
+contract ERC721MintSystem is System {
     using ERC721ECSLib for IUint256Component;
 
-    constructor(IWorld world) PayableSystem(world, MintPayableSystemID) {}
+    constructor(IWorld world) System(world, ERC721MintSystemID) {}
 
-    function execute(bytes memory args)
-        public
-        payable
-        virtual
-        returns (bytes memory)
-    {
+    function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 to, uint256 entity) = abi.decode(args, (uint256, uint256));
 
         executeTyped(to, entity);
     }
 
-    function executeTyped(uint256 to, uint256 entity) public payable virtual {
+    function executeTyped(uint256 to, uint256 entity) public virtual {
         uint256 token = getEntityToken(entity);
         if (addressToEntity(address(this)) != token) {
             require(
@@ -38,15 +32,15 @@ contract MintPayableSystem is PayableSystem {
     }
 }
 
-function getMintPayableSystem(IUint256Component systems)
+function getERC721MintSystem(IUint256Component systems)
     view
-    returns (MintPayableSystem)
+    returns (ERC721MintSystem)
 {
-    return MintPayableSystem(getAddressById(systems, MintPayableSystemID));
+    return ERC721MintSystem(getAddressById(systems, ERC721MintSystemID));
 }
 
-function deployMintPayableSystem(IWorld world) {
-    address system = address(new MintPayableSystem(world));
+function deployERC721MintSystem(IWorld world) {
+    address system = address(new ERC721MintSystem(world));
 
     IUint256Component components = world.components();
     getBalanceComponent(components).authorizeWriter(system);

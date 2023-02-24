@@ -43,19 +43,19 @@ contract DeployLibTest is Test {
         IUint256Component systems = world.systems();
         System system;
 
-        system = getApproveSystem(systems);
+        system = getERC721ApproveSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = getBurnSystem(systems);
+        system = getERC721BurnSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = getSafeTransferFromSystem(systems);
+        system = getERC721SafeTransferFromSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = getSetApprovalForAllSystem(systems);
+        system = getERC721SetApprovalForAllSystem(systems);
         assertEq(address(system.WORLD()), address(world));
 
-        system = getTransferFromSystem(systems);
+        system = getERC721TransferFromSystem(systems);
         assertEq(address(system.WORLD()), address(world));
     }
 }

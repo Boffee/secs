@@ -5,12 +5,13 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC721/ERC721ECSLib.sol";
 import "secs/systems/System.sol";
 
-uint256 constant ApproveSystemID = uint256(keccak256("system.ERC721.Approve"));
+uint256 constant ERC721ApproveSystemID =
+    uint256(keccak256("system.ERC721.Approve"));
 
-contract ApproveSystem is System {
+contract ERC721ApproveSystem is System {
     using ERC721ECSLib for IUint256Component;
 
-    constructor(IWorld world) System(world, ApproveSystemID) {}
+    constructor(IWorld world) System(world, ERC721ApproveSystemID) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 to, uint256 entity) = abi.decode(args, (uint256, uint256));
@@ -32,15 +33,15 @@ contract ApproveSystem is System {
     }
 }
 
-function getApproveSystem(IUint256Component systems)
+function getERC721ApproveSystem(IUint256Component systems)
     view
-    returns (ApproveSystem)
+    returns (ERC721ApproveSystem)
 {
-    return ApproveSystem(getAddressById(systems, ApproveSystemID));
+    return ERC721ApproveSystem(getAddressById(systems, ERC721ApproveSystemID));
 }
 
-function deployApproveSystem(IWorld world) {
-    address system = address(new ApproveSystem(world));
+function deployERC721ApproveSystem(IWorld world) {
+    address system = address(new ERC721ApproveSystem(world));
 
     IUint256Component components = world.components();
     getApprovalComponent(components).authorizeWriter(system);

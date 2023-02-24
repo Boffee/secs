@@ -5,12 +5,13 @@ import "solecs/interfaces/IWorld.sol";
 import "secs/tokens/ERC721/ERC721ECSLib.sol";
 import "secs/systems/System.sol";
 
-uint256 constant SafeMintSystemID = uint256(keccak256("system.ERC721.SafeMint"));
+uint256 constant ERC721SafeMintSystemID =
+    uint256(keccak256("system.ERC721.SafeMint"));
 
-contract SafeMintSystem is System {
+contract ERC721SafeMintSystem is System {
     using ERC721ECSLib for IUint256Component;
 
-    constructor(IWorld world) System(world, SafeMintSystemID) {}
+    constructor(IWorld world) System(world, ERC721SafeMintSystemID) {}
 
     function execute(bytes memory args) public virtual returns (bytes memory) {
         (uint256 to, uint256 entity, bytes memory data) =
@@ -35,15 +36,15 @@ contract SafeMintSystem is System {
     }
 }
 
-function getSafeMintSystem(IUint256Component systems)
+function getERC721SafeMintSystem(IUint256Component systems)
     view
-    returns (SafeMintSystem)
+    returns (ERC721SafeMintSystem)
 {
-    return SafeMintSystem(getAddressById(systems, SafeMintSystemID));
+    return ERC721SafeMintSystem(getAddressById(systems, ERC721SafeMintSystemID));
 }
 
-function deploySafeMintSystem(IWorld world) {
-    address system = address(new SafeMintSystem(world));
+function deployERC721SafeMintSystem(IWorld world) {
+    address system = address(new ERC721SafeMintSystem(world));
 
     IUint256Component components = world.components();
     getBalanceComponent(components).authorizeWriter(system);

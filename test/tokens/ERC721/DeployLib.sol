@@ -30,13 +30,13 @@ library DeployLib {
     }
 
     function deploySystems(IWorld world) internal {
-        deployApproveSystem(world);
-        deployBurnSystem(world);
-        deployMintSystem(world);
-        deploySafeMintSystem(world);
-        deploySafeTransferFromSystem(world);
-        deploySetApprovalForAllSystem(world);
-        deployTransferFromSystem(world);
+        deployERC721ApproveSystem(world);
+        deployERC721BurnSystem(world);
+        deployERC721MintSystem(world);
+        deployERC721SafeMintSystem(world);
+        deployERC721SafeTransferFromSystem(world);
+        deployERC721SetApprovalForAllSystem(world);
+        deployERC721TransferFromSystem(world);
     }
 
     function deployERC721ECS(

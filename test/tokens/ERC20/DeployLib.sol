@@ -29,10 +29,10 @@ library DeployLib {
     }
 
     function deploySystems(IWorld world) internal {
-        deployApproveSystem(world);
-        deployMintSystem(world);
-        deployBurnFromSystem(world);
-        deployTransferFromSystem(world);
+        deployERC20ApproveSystem(world);
+        deployERC20MintSystem(world);
+        deployERC20BurnFromSystem(world);
+        deployERC20TransferFromSystem(world);
     }
 
     function deployERC20ECS(

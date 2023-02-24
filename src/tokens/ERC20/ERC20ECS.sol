@@ -8,9 +8,9 @@ import "solecs/utils.sol";
 import "secs/libraries/SystemDelegateCall.sol";
 import "secs/systems/System.sol";
 import "secs/utils/entity.sol";
-import "./systems/ApproveSystem.sol";
-import "./systems/BurnFromSystem.sol";
-import "./systems/TransferFromSystem.sol";
+import "./systems/ERC20ApproveSystem.sol";
+import "./systems/ERC20BurnFromSystem.sol";
+import "./systems/ERC20TransferFromSystem.sol";
 import "./ERC20ECSLib.sol";
 import "./IERC20ECS.sol";
 
@@ -153,7 +153,7 @@ contract ERC20ECS is IERC20ECS, Ownable, Context {
         override
         returns (bool)
     {
-        address(getApproveSystem(SYSTEMS)).systemDelegateCall(
+        address(getERC20ApproveSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(thisEntity(), spender, amount)
         );
         return true;
@@ -177,7 +177,7 @@ contract ERC20ECS is IERC20ECS, Ownable, Context {
         override
         returns (bool)
     {
-        address(getTransferFromSystem(SYSTEMS)).systemDelegateCall(
+        address(getERC20TransferFromSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(thisEntity(), from, to, amount)
         );
         return true;
@@ -198,7 +198,7 @@ contract ERC20ECS is IERC20ECS, Ownable, Context {
         override
         returns (bool)
     {
-        address(getBurnFromSystem(SYSTEMS)).systemDelegateCall(
+        address(getERC20BurnFromSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(thisEntity(), account, amount)
         );
         return true;

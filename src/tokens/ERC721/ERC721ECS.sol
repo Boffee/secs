@@ -8,11 +8,11 @@ import "solecs/Ownable.sol";
 import "solecs/utils.sol";
 import "secs/libraries/SystemDelegateCall.sol";
 import "secs/utils/entity.sol";
-import "./systems/ApproveSystem.sol";
-import "./systems/BurnSystem.sol";
-import "./systems/SafeTransferFromSystem.sol";
-import "./systems/SetApprovalForAllSystem.sol";
-import "./systems/TransferFromSystem.sol";
+import "./systems/ERC721ApproveSystem.sol";
+import "./systems/ERC721BurnSystem.sol";
+import "./systems/ERC721SafeTransferFromSystem.sol";
+import "./systems/ERC721SetApprovalForAllSystem.sol";
+import "./systems/ERC721TransferFromSystem.sol";
 import "./ERC721ECSLib.sol";
 import "./IERC721ECS.sol";
 
@@ -117,7 +117,7 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
     }
 
     function approve(uint256 to, uint256 tokenId) public virtual override {
-        address(getApproveSystem(SYSTEMS)).systemDelegateCall(
+        address(getERC721ApproveSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(to, toEntity(tokenId))
         );
     }
@@ -151,7 +151,7 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
         virtual
         override
     {
-        address(getSetApprovalForAllSystem(SYSTEMS)).systemDelegateCall(
+        address(getERC721SetApprovalForAllSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(thisEntity(), operator, approved)
         );
     }
@@ -181,7 +181,7 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
     }
 
     function burn(uint256 tokenId) public virtual override {
-        address(getBurnSystem(SYSTEMS)).systemDelegateCall(
+        address(getERC721BurnSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(toEntity(tokenId))
         );
     }
@@ -202,7 +202,7 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
         virtual
         override
     {
-        address(getTransferFromSystem(SYSTEMS)).systemDelegateCall(
+        address(getERC721TransferFromSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(from, to, toEntity(tokenId))
         );
     }
@@ -246,7 +246,7 @@ contract ERC721ECS is IERC721ECS, Ownable, Context {
         uint256 tokenId,
         bytes memory data
     ) public virtual override {
-        address(getSafeTransferFromSystem(SYSTEMS)).systemDelegateCall(
+        address(getERC721SafeTransferFromSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(from, to, toEntity(tokenId), data)
         );
     }
