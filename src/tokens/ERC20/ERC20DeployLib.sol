@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import "solecs/world.sol";
+import {World} from "solecs/world.sol";
 import "./systems/ERC20MintSystem.sol";
 import "./ERC20ECS.sol";
 
