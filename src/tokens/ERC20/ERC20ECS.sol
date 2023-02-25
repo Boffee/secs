@@ -350,19 +350,3 @@ contract ERC20ECS is IERC20ECS, Ownable, Context {
         _;
     }
 }
-
-function configERC20ECS(
-    ERC20ECS erc20,
-    string memory name,
-    string memory symbol
-) {
-    IUint256Component components = erc20.COMPONENTS();
-    getAllowanceComponent(components).authorizeWriter(address(erc20));
-    getBalanceComponent(components).authorizeWriter(address(erc20));
-    getNameComponent(components).authorizeWriter(address(erc20));
-    getSymbolComponent(components).authorizeWriter(address(erc20));
-    getTotalSupplyComponent(components).authorizeWriter(address(erc20));
-
-    erc20.setName(name);
-    erc20.setSymbol(symbol);
-}
