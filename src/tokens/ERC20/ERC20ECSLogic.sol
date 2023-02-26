@@ -2,12 +2,14 @@
 pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC721.sol";
 import "solecs/interfaces/IUint256Component.sol";
 import "solecs/utils.sol";
 import "secs/utils/entity.sol";
 import "../components/AllowanceComponent.sol";
 import "../components/BalanceComponent.sol";
 import "../components/NameComponent.sol";
+import "../components/OwnerComponent.sol";
 import "../components/SymbolComponent.sol";
 import "../components/TotalSupplyComponent.sol";
 import "./IERC20ECSHooks.sol";
@@ -95,6 +97,8 @@ library ERC20ECSLogic {
         uint256 owner,
         uint256 spender
     ) internal view returns (uint256) {
+        owner = _rootOwner(owner);
+        if (spender == owner) return type(uint256).max;
         // return _allowances[owner][spender];
         return getAllowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
@@ -284,6 +288,9 @@ library ERC20ECSLogic {
         uint256 spender,
         uint256 amount
     ) internal {
+        owner = _rootOwner(owner);
+        if (spender == owner) return;
+
         // uint256 currentAllowance = allowance(owner, spender);
         uint256 currentAllowance = getAllowanceComponent(components).getValue(
             hashEntities(token, owner, spender)
@@ -322,6 +329,9 @@ library ERC20ECSLogic {
         uint256 spender,
         uint256 addedValue
     ) internal returns (bool) {
+        owner = _rootOwner(owner);
+        if (spender == owner) return true;
+
         // address owner = _msgSender();
         // _approve(owner, spender, allowance(owner, spender) + addedValue);
         getAllowanceComponent(components).increment(
@@ -352,6 +362,9 @@ library ERC20ECSLogic {
         uint256 spender,
         uint256 subtractedValue
     ) internal returns (bool) {
+        owner = _rootOwner(owner);
+        if (spender == owner) return true;
+
         // address owner = _msgSender();
         // uint256 currentAllowance = allowance(owner, spender);
         // require(
@@ -456,5 +469,13 @@ library ERC20ECSLogic {
 
     function thisEntity() internal view returns (uint256) {
         return addressToEntity(address(this));
+    }
+
+    function _rootOwner(uint256 owner) internal view returns (uint256) {
+        if (!entityIsAddress(owner)) {
+            (address token, uint256 id) = entityToToken(owner);
+            return addressToEntity(IERC721(token).ownerOf(id));
+        }
+        return owner;
     }
 }

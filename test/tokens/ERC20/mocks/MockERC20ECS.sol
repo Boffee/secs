@@ -6,10 +6,17 @@ import "secs/tokens/ERC20/systems/ERC20MintSystem.sol";
 
 contract MockERC20ECS is ERC20ECS {
     using SystemDelegateCall for address;
+    using ERC20ECSLogic for IUint256Component;
 
     constructor(IWorld world) ERC20ECS(world) {}
 
     function mint(address to, uint256 value) public {
+        address(getERC20MintSystem(SYSTEMS)).systemDelegateCall(
+            abi.encode(thisEntity(), to, value)
+        );
+    }
+
+    function mint(uint256 to, uint256 value) public {
         address(getERC20MintSystem(SYSTEMS)).systemDelegateCall(
             abi.encode(thisEntity(), to, value)
         );
