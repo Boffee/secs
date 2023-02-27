@@ -9,6 +9,15 @@ uint256 constant SymbolComponentID = uint256(keccak256("component.Symbol"));
 
 contract SymbolComponent is StringComponent {
     constructor(address world) StringComponent(world, SymbolComponentID) {}
+
+    function _set(uint256 entity, bytes memory value)
+        internal
+        virtual
+        override
+    {
+        require(getEntitiesWithValue(value).length > 0, "Name must be unique");
+        super._set(entity, value);
+    }
 }
 
 function getSymbolComponent(IUint256Component components)

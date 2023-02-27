@@ -9,6 +9,15 @@ uint256 constant NameComponentID = uint256(keccak256("component.Name"));
 
 contract NameComponent is StringComponent {
     constructor(address world) StringComponent(world, NameComponentID) {}
+
+    function _set(uint256 entity, bytes memory value)
+        internal
+        virtual
+        override
+    {
+        require(getEntitiesWithValue(value).length > 0, "Name must be unique");
+        super._set(entity, value);
+    }
 }
 
 function getNameComponent(IUint256Component components)
