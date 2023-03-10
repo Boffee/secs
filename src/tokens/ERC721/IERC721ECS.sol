@@ -30,4 +30,6 @@ interface IERC721ECS is IERC721Metadata, IERC721ECSHooks {
         external
         view
         returns (bool);
+
+    function toEntity(uint256 tokenId) external view returns (uint256);
 }
