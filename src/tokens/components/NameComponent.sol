@@ -15,7 +15,7 @@ contract NameComponent is StringComponent {
         virtual
         override
     {
-        require(getEntitiesWithValue(value).length > 0, "Name must be unique");
+        require(getEntitiesWithValue(value).length == 0, "Name must be unique");
         super._set(entity, value);
     }
 }
