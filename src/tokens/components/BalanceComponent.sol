@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "secs/components/CounterBareComponent.sol";
+import "secs/utils/entity.sol";
 import "solecs/interfaces/IUint256Component.sol";
 import "solecs/utils.sol";
 
@@ -21,8 +22,5 @@ function getBalanceComponent(IUint256Component components)
 }
 
 function deployBalanceComponent(IWorld world) {
-    if (world.components().getEntitiesWithValue(BalanceComponentID).length == 0)
-    {
-        new BalanceComponent(address(world));
-    }
+    new BalanceComponent(address(world));
 }

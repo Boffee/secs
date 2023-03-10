@@ -15,22 +15,50 @@ library ERC721DeployLib {
     }
 
     function deployComponents(IWorld world) internal {
-        deployApprovalComponent(world);
-        deployBalanceComponent(world);
-        deployNameComponent(world);
-        deployOperatorApprovalComponent(world);
-        deployOwnerComponent(world);
-        deploySymbolComponent(world);
+        IUint256Component components = world.components();
+        if (!isRegistered(components, ApprovalComponentID)) {
+            deployApprovalComponent(world);
+        }
+        if (!isRegistered(components, BalanceComponentID)) {
+            deployBalanceComponent(world);
+        }
+        if (!isRegistered(components, NameComponentID)) {
+            deployNameComponent(world);
+        }
+        if (!isRegistered(components, OperatorApprovalComponentID)) {
+            deployOperatorApprovalComponent(world);
+        }
+        if (!isRegistered(components, OwnerComponentID)) {
+            deployOwnerComponent(world);
+        }
+        if (!isRegistered(components, SymbolComponentID)) {
+            deploySymbolComponent(world);
+        }
     }
 
     function deploySystems(IWorld world) internal {
-        deployERC721ApproveSystem(world);
-        deployERC721BurnSystem(world);
-        deployERC721MintSystem(world);
-        deployERC721SafeMintSystem(world);
-        deployERC721SafeTransferFromSystem(world);
-        deployERC721SetApprovalForAllSystem(world);
-        deployERC721TransferFromSystem(world);
+        IUint256Component systems = world.systems();
+        if (!isRegistered(systems, ERC721ApproveSystemID)) {
+            deployERC721ApproveSystem(world);
+        }
+        if (!isRegistered(systems, ERC721BurnSystemID)) {
+            deployERC721BurnSystem(world);
+        }
+        if (!isRegistered(systems, ERC721MintSystemID)) {
+            deployERC721MintSystem(world);
+        }
+        if (!isRegistered(systems, ERC721SafeMintSystemID)) {
+            deployERC721SafeMintSystem(world);
+        }
+        if (!isRegistered(systems, ERC721SafeTransferFromSystemID)) {
+            deployERC721SafeTransferFromSystem(world);
+        }
+        if (!isRegistered(systems, ERC721SetApprovalForAllSystemID)) {
+            deployERC721SetApprovalForAllSystem(world);
+        }
+        if (!isRegistered(systems, ERC721TransferFromSystemID)) {
+            deployERC721TransferFromSystem(world);
+        }
     }
 
     function configERC721ECS(

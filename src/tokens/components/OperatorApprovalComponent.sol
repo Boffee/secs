@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "secs/components/BoolBareComponent.sol";
+import "secs/utils/entity.sol";
 import "solecs/interfaces/IUint256Component.sol";
 import "solecs/utils.sol";
 
@@ -24,10 +25,5 @@ function getOperatorApprovalComponent(IUint256Component components)
 }
 
 function deployOperatorApprovalComponent(IWorld world) {
-    if (
-        world.components().getEntitiesWithValue(OperatorApprovalComponentID)
-            .length == 0
-    ) {
-        new OperatorApprovalComponent(address(world));
-    }
+    new OperatorApprovalComponent(address(world));
 }

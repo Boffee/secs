@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "solecs-std/components/StringComponent.sol";
+import "secs/utils/entity.sol";
 import "solecs/interfaces/IUint256Component.sol";
 import "solecs/utils.sol";
 
@@ -28,8 +29,5 @@ function getSymbolComponent(IUint256Component components)
 }
 
 function deploySymbolComponent(IWorld world) {
-    if (world.components().getEntitiesWithValue(SymbolComponentID).length == 0)
-    {
-        new SymbolComponent(address(world));
-    }
+    new SymbolComponent(address(world));
 }

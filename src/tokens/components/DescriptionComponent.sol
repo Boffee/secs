@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "solecs-std/components/StringComponent.sol";
+import "secs/utils/entity.sol";
 import "solecs/interfaces/IUint256Component.sol";
 import "solecs/utils.sol";
 
@@ -21,10 +22,5 @@ function getDescriptionComponent(IUint256Component components)
 }
 
 function deployDescriptionComponent(IWorld world) {
-    if (
-        world.components().getEntitiesWithValue(DescriptionComponentID).length
-            == 0
-    ) {
-        new DescriptionComponent(address(world));
-    }
+    new DescriptionComponent(address(world));
 }

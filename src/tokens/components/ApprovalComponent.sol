@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "secs/components/Uint256BareComponent.sol";
+import "secs/utils/entity.sol";
 import "solecs/interfaces/IUint256Component.sol";
 import "solecs/utils.sol";
 
@@ -21,9 +22,5 @@ function getApprovalComponent(IUint256Component components)
 }
 
 function deployApprovalComponent(IWorld world) {
-    if (
-        world.components().getEntitiesWithValue(ApprovalComponentID).length == 0
-    ) {
-        new ApprovalComponent(address(world));
-    }
+    new ApprovalComponent(address(world));
 }

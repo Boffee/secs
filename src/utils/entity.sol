@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
+import "solecs/interfaces/IUint256Component.sol";
+
 function tokenToEntity(address token, uint256 id) pure returns (uint256) {
     return (uint256(uint160(token)) << 96) | id;
 }
@@ -51,4 +53,11 @@ function entityIsAddress(uint256 entity) pure returns (bool) {
 
 function hashEntityToAddress(uint256 entity) pure returns (address) {
     return address(uint160(uint256(keccak256(abi.encode(entity)))));
+}
+
+function isRegistered(IUint256Component registry, uint256 id)
+    view
+    returns (bool)
+{
+    return registry.getEntitiesWithValue(id).length > 0;
 }

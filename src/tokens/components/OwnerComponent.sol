@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "secs/components/Uint256BareComponent.sol";
+import "secs/utils/entity.sol";
 import "solecs/interfaces/IUint256Component.sol";
 import "solecs/utils.sol";
 
@@ -19,7 +20,5 @@ function getOwnerComponent(IUint256Component components)
 }
 
 function deployOwnerComponent(IWorld world) {
-    if (world.components().getEntitiesWithValue(OwnerComponentID).length == 0) {
-        new OwnerComponent(address(world));
-    }
+    new OwnerComponent(address(world));
 }

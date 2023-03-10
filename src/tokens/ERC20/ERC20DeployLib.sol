@@ -14,18 +14,38 @@ library ERC20DeployLib {
     }
 
     function deployComponents(IWorld world) internal {
-        deployAllowanceComponent(world);
-        deployBalanceComponent(world);
-        deployNameComponent(world);
-        deploySymbolComponent(world);
-        deployTotalSupplyComponent(world);
+        IUint256Component components = world.components();
+        if (!isRegistered(components, AllowanceComponentID)) {
+            deployAllowanceComponent(world);
+        }
+        if (!isRegistered(components, BalanceComponentID)) {
+            deployBalanceComponent(world);
+        }
+        if (!isRegistered(components, NameComponentID)) {
+            deployNameComponent(world);
+        }
+        if (!isRegistered(components, SymbolComponentID)) {
+            deploySymbolComponent(world);
+        }
+        if (!isRegistered(components, TotalSupplyComponentID)) {
+            deployTotalSupplyComponent(world);
+        }
     }
 
     function deploySystems(IWorld world) internal {
-        deployERC20ApproveSystem(world);
-        deployERC20MintSystem(world);
-        deployERC20BurnFromSystem(world);
-        deployERC20TransferFromSystem(world);
+        IUint256Component systems = world.systems();
+        if (!isRegistered(systems, ERC20ApproveSystemID)) {
+            deployERC20ApproveSystem(world);
+        }
+        if (!isRegistered(systems, ERC20MintSystemID)) {
+            deployERC20MintSystem(world);
+        }
+        if (!isRegistered(systems, ERC20BurnFromSystemID)) {
+            deployERC20BurnFromSystem(world);
+        }
+        if (!isRegistered(systems, ERC20TransferFromSystemID)) {
+            deployERC20TransferFromSystem(world);
+        }
     }
 
     function configERC20ECS(
