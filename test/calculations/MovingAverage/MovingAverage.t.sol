@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 import "forge-std/Test.sol";
 import "forge-std/console2.sol";
 import "solecs/World.sol";
-import "secs/calculations/MovingAverage/EMALogic.sol";
+import "secs/math/MovingAverage/EMALogic.sol";
 
 contract MovingAverageTest is Test {
     using EMALogic for IUint256Component;
