@@ -31,3 +31,10 @@ function getSymbolComponent(IUint256Component components)
 function deploySymbolComponent(IWorld world) {
     new SymbolComponent(address(world));
 }
+
+function getEntityBySymbol(IUint256Component components, bytes memory symbol)
+    view
+    returns (uint256)
+{
+    return getSymbolComponent(components).getEntitiesWithValue(symbol)[0];
+}

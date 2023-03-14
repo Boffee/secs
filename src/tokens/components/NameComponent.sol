@@ -31,3 +31,10 @@ function getNameComponent(IUint256Component components)
 function deployNameComponent(IWorld world) {
     new NameComponent(address(world));
 }
+
+function getEntityByName(IUint256Component components, bytes memory name)
+    view
+    returns (uint256)
+{
+    return getNameComponent(components).getEntitiesWithValue(name)[0];
+}
