@@ -32,9 +32,11 @@ function deploySymbolComponent(IWorld world) {
     new SymbolComponent(address(world));
 }
 
-function getEntityBySymbol(IUint256Component components, bytes memory symbol)
+function getEntityBySymbol(IUint256Component components, string memory symbol)
     view
     returns (uint256)
 {
-    return getSymbolComponent(components).getEntitiesWithValue(symbol)[0];
+    return getSymbolComponent(components).getEntitiesWithValue(
+        abi.encode(symbol)
+    )[0];
 }

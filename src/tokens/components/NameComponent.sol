@@ -32,9 +32,10 @@ function deployNameComponent(IWorld world) {
     new NameComponent(address(world));
 }
 
-function getEntityByName(IUint256Component components, bytes memory name)
+function getEntityByName(IUint256Component components, string memory name)
     view
     returns (uint256)
 {
-    return getNameComponent(components).getEntitiesWithValue(name)[0];
+    return
+        getNameComponent(components).getEntitiesWithValue(abi.encode(name))[0];
 }
