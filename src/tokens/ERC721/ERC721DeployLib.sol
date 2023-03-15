@@ -22,6 +22,9 @@ library ERC721DeployLib {
         if (!isRegistered(components, BalanceComponentID)) {
             deployBalanceComponent(world);
         }
+        if (!isRegistered(components, DescriptionComponentID)) {
+            deployDescriptionComponent(world);
+        }
         if (!isRegistered(components, NameComponentID)) {
             deployNameComponent(world);
         }
@@ -69,6 +72,7 @@ library ERC721DeployLib {
         IUint256Component components = erc721.COMPONENTS();
         getApprovalComponent(components).authorizeWriter(address(erc721));
         getBalanceComponent(components).authorizeWriter(address(erc721));
+        getDescriptionComponent(components).authorizeWriter(address(erc721));
         getNameComponent(components).authorizeWriter(address(erc721));
         getOperatorApprovalComponent(components).authorizeWriter(
             address(erc721)
